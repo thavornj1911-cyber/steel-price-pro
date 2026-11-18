@@ -66,37 +66,42 @@ body {
 
 /* 6-Digit PIN Keypad Styling */
 .pin-key {
-    height: 56px;
+    height: 60px;
     border-radius: 9999px;
-    background-color: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    font-size: 1.4rem;
-    font-weight: 600;
+    background-color: #1e293b !important;
+    border: 2px solid #475569 !important;
+    color: #ffffff !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
     font-family: 'Kanit', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.1s ease-in-out;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
 }
 .pin-key:hover {
-    background-color: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.3);
+    background-color: #334155 !important;
+    border-color: #94a3b8 !important;
 }
 .pin-key:active {
-    background-color: #0284c7;
-    border-color: #38bdf8;
+    background-color: #0284c7 !important;
+    border-color: #38bdf8 !important;
     transform: scale(0.92);
 }
 .pin-key-util {
-    height: 56px;
+    height: 60px;
     border-radius: 9999px;
+    background-color: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.1s ease-in-out;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
 }
 .pin-key-util:active {
     transform: scale(0.9);

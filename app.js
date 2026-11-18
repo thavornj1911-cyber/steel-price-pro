@@ -37,8 +37,8 @@ let appState = {
 };
 
 // ----------------- 6-DIGIT PIN SECURITY LOCK -----------------
-// รหัส PIN 6 หลักสำหรับเข้าใช้งาน (สามารถเปลี่ยนรหัส 6 ตัวนี้ได้ที่นี่)
-const APP_PIN = "123456";
+// รหัส PIN 6 หลักสำหรับเข้าใช้งาน
+const APP_PIN = "525439";
 let enteredPin = "";
 
 function initPinLock() {
@@ -72,6 +72,9 @@ function inputPinDigit(digit) {
     if (enteredPin.length >= 6) return;
     enteredPin += digit;
     updatePinDots();
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        try { navigator.vibrate(25); } catch(e) {}
+    }
 
     if (enteredPin.length === 6) {
         setTimeout(verifyPin, 120);
@@ -97,9 +100,9 @@ function updatePinDots() {
         const dot = document.getElementById(`pinDot-${i}`);
         if (dot) {
             if (i < enteredPin.length) {
-                dot.className = "w-3.5 h-3.5 rounded-full bg-blue-500 border-2 border-blue-400 shadow-md shadow-blue-500/50 scale-110 transition duration-150";
+                dot.className = "w-4 h-4 rounded-full bg-blue-400 border-2 border-white shadow-lg shadow-blue-500 scale-125 transition-all duration-150";
             } else {
-                dot.className = "w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150";
+                dot.className = "w-4 h-4 rounded-full border-2 border-slate-500 bg-slate-800 transition-all duration-150";
             }
         }
     }
