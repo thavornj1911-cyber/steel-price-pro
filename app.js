@@ -36,8 +36,140 @@ let appState = {
     totalShopCount: 0
 };
 
+// ----------------- 6-DIGIT PIN SECURITY LOCK -----------------
+// รหัส PIN 6 หลักสำหรับเข้าใช้งาน (สามารถเปลี่ยนรหัส 6 ตัวนี้ได้ที่นี่)
+const APP_PIN = "123456";
+let enteredPin = "";
+
+function initPinLock() {
+    const isUnlocked = localStorage.getItem('steel_app_unlocked') === 'true' || sessionStorage.getItem('steel_app_unlocked') === 'true';
+    if (isUnlocked) {
+        unlockApp(false);
+        return;
+    }
+
+    const lockEl = document.getElementById('pinLockScreen');
+    if (lockEl) {
+        lockEl.classList.remove('hidden', 'opacity-0');
+    }
+    window.addEventListener('keydown', handlePinKeydown);
+}
+
+function handlePinKeydown(e) {
+    const lockEl = document.getElementById('pinLockScreen');
+    if (!lockEl || lockEl.classList.contains('hidden')) return;
+
+    if (e.key >= '0' && e.key <= '9') {
+        inputPinDigit(e.key);
+    } else if (e.key === 'Backspace') {
+        deletePinDigit();
+    } else if (e.key === 'Escape') {
+        clearPin();
+    }
+}
+
+function inputPinDigit(digit) {
+    if (enteredPin.length >= 6) return;
+    enteredPin += digit;
+    updatePinDots();
+
+    if (enteredPin.length === 6) {
+        setTimeout(verifyPin, 120);
+    }
+}
+
+function deletePinDigit() {
+    if (enteredPin.length > 0) {
+        enteredPin = enteredPin.slice(0, -1);
+        updatePinDots();
+        hidePinError();
+    }
+}
+
+function clearPin() {
+    enteredPin = "";
+    updatePinDots();
+    hidePinError();
+}
+
+function updatePinDots() {
+    for (let i = 0; i < 6; i++) {
+        const dot = document.getElementById(`pinDot-${i}`);
+        if (dot) {
+            if (i < enteredPin.length) {
+                dot.className = "w-3.5 h-3.5 rounded-full bg-blue-500 border-2 border-blue-400 shadow-md shadow-blue-500/50 scale-110 transition duration-150";
+            } else {
+                dot.className = "w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150";
+            }
+        }
+    }
+}
+
+function verifyPin() {
+    if (enteredPin === APP_PIN) {
+        const remember = document.getElementById('pinRememberCheckbox')?.checked;
+        if (remember) {
+            try { localStorage.setItem('steel_app_unlocked', 'true'); } catch(e) {}
+        } else {
+            try { sessionStorage.setItem('steel_app_unlocked', 'true'); } catch(e) {}
+        }
+        unlockApp(true);
+    } else {
+        showPinError();
+        const container = document.getElementById('pinDotsContainer');
+        if (container) {
+            container.classList.add('animate-shake');
+            setTimeout(() => container.classList.remove('animate-shake'), 400);
+        }
+        setTimeout(() => {
+            enteredPin = "";
+            updatePinDots();
+        }, 500);
+    }
+}
+
+function showPinError() {
+    const err = document.getElementById('pinErrorMsg');
+    if (err) err.classList.remove('opacity-0');
+}
+
+function hidePinError() {
+    const err = document.getElementById('pinErrorMsg');
+    if (err) err.classList.add('opacity-0');
+}
+
+function unlockApp(animate = true) {
+    const lockEl = document.getElementById('pinLockScreen');
+    if (lockEl) {
+        if (animate) {
+            lockEl.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+            setTimeout(() => lockEl.classList.add('hidden'), 300);
+        } else {
+            lockEl.classList.add('hidden');
+        }
+    }
+    window.removeEventListener('keydown', handlePinKeydown);
+}
+
+function lockApp() {
+    try {
+        localStorage.removeItem('steel_app_unlocked');
+        sessionStorage.removeItem('steel_app_unlocked');
+    } catch(e) {}
+    enteredPin = "";
+    updatePinDots();
+    hidePinError();
+    const lockEl = document.getElementById('pinLockScreen');
+    if (lockEl) {
+        lockEl.classList.remove('hidden', 'opacity-0');
+    }
+    window.addEventListener('keydown', handlePinKeydown);
+    showToast("ล็อคหน้าจอเรียบร้อย", "info");
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     lucide.createIcons();
+    initPinLock();
     initViewMode();
 
     // Register Service Worker for PWA (Progressive Web App)

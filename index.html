@@ -49,6 +49,62 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
+    <!-- ==================== 6-DIGIT PIN LOCK SCREEN ==================== -->
+    <div id="pinLockScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-sky-950 flex flex-col items-center justify-center p-4 select-none">
+        <div class="w-full max-w-xs flex flex-col items-center space-y-5">
+            <!-- Brand Icon & Header -->
+            <div class="flex flex-col items-center space-y-2 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30 border border-blue-400/40">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-white tracking-tight font-prompt">2S METAL COST PRO</h1>
+                    <p class="text-xs text-sky-300 font-medium mt-0.5">ระบบเช็คต้นทุน & กำไรเหล็ก (เฉพาะภายในร้าน)</p>
+                </div>
+            </div>
+
+            <!-- PIN Prompt & 6 Dots -->
+            <div class="flex flex-col items-center space-y-2 w-full pt-1">
+                <span class="text-xs text-slate-300 font-medium tracking-wide">กรุณากรอกรหัสผ่าน PIN 6 หลัก</span>
+                <div class="flex items-center space-x-3.5 my-2" id="pinDotsContainer">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150" id="pinDot-0"></div>
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150" id="pinDot-1"></div>
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150" id="pinDot-2"></div>
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150" id="pinDot-3"></div>
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150" id="pinDot-4"></div>
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-slate-500 transition duration-150" id="pinDot-5"></div>
+                </div>
+                <p id="pinErrorMsg" class="text-xs text-rose-400 font-medium h-4 transition opacity-0 text-center">รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่</p>
+            </div>
+
+            <!-- Touch Number Keypad -->
+            <div class="grid grid-cols-3 gap-3 w-full max-w-[260px]">
+                <button type="button" onclick="inputPinDigit('1')" class="pin-key">1</button>
+                <button type="button" onclick="inputPinDigit('2')" class="pin-key">2</button>
+                <button type="button" onclick="inputPinDigit('3')" class="pin-key">3</button>
+                <button type="button" onclick="inputPinDigit('4')" class="pin-key">4</button>
+                <button type="button" onclick="inputPinDigit('5')" class="pin-key">5</button>
+                <button type="button" onclick="inputPinDigit('6')" class="pin-key">6</button>
+                <button type="button" onclick="inputPinDigit('7')" class="pin-key">7</button>
+                <button type="button" onclick="inputPinDigit('8')" class="pin-key">8</button>
+                <button type="button" onclick="inputPinDigit('9')" class="pin-key">9</button>
+                <button type="button" onclick="clearPin()" class="pin-key-util text-slate-400 hover:text-white">
+                    <span class="text-xs font-semibold">ล้าง</span>
+                </button>
+                <button type="button" onclick="inputPinDigit('0')" class="pin-key">0</button>
+                <button type="button" onclick="deletePinDigit()" class="pin-key-util text-slate-400 hover:text-white">
+                    <i data-lucide="delete" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Remember Login Option -->
+            <label class="flex items-center space-x-2 text-xs text-slate-400 cursor-pointer pt-1">
+                <input type="checkbox" id="pinRememberCheckbox" checked class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 bg-slate-800 border-slate-700">
+                <span>จำรหัสผ่านในเครื่องนี้ (ไม่ต้องใส่ซ้ำ)</span>
+            </label>
+        </div>
+    </div>
+
     <!-- Top Navigation Header -->
     <header class="bg-gradient-to-r from-slate-900 via-sky-950 to-blue-900 text-white shadow-lg sticky top-0 z-40 border-b border-sky-700/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,6 +146,11 @@
                     <button onclick="importExpressAuto()" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-sky-200 rounded-lg text-sm font-medium border border-sky-700/50 transition">
                         <i data-lucide="database" class="w-4 h-4 text-amber-400"></i>
                         <span>ดึงจาก Express</span>
+                    </button>
+
+                    <button onclick="lockApp()" class="flex items-center space-x-1 px-2.5 py-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium border border-slate-700/60 transition" title="ล็อคหน้าจอด้วยรหัส PIN">
+                        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                        <span class="hidden sm:inline">ล็อค</span>
                     </button>
                 </div>
             </div>
