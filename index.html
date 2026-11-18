@@ -316,6 +316,18 @@
                         </select>
                     </div>
 
+                    <!-- Sort Order Filter -->
+                    <div class="w-full md:w-56">
+                        <select id="sortFilter" onchange="filterMatrix()" class="w-full py-2 px-3 bg-blue-50/60 border border-blue-300 text-blue-900 font-semibold rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs">
+                            <option value="profit_desc" selected>💰 เรียง: กำไรมาก ➔ น้อย (บาท)</option>
+                            <option value="margin_desc">📈 เรียง: กำไร % มาก ➔ น้อย</option>
+                            <option value="profit_asc">⚠️ เรียง: กำไรน้อย ➔ มาก (เสี่ยงขาดทุน)</option>
+                            <option value="price_desc">🏷️ เรียง: ราคาขายมาก ➔ น้อย</option>
+                            <option value="code_asc">🔢 ตามรหัสสินค้า</option>
+                            <option value="name_asc">🔤 ตามชื่อสินค้า</option>
+                        </select>
+                    </div>
+
                     <!-- Export Button -->
                     <button onclick="exportToCSV()" class="flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition">
                         <i data-lucide="download" class="w-4 h-4"></i>
@@ -373,17 +385,33 @@
                                     <div class="text-[10px] text-sky-300 font-normal">สุทธิ (รวม VAT ลด 1%)</div>
                                 </th>
                                 <th class="py-3 px-3 text-right">ราคาขายหน้าร้าน</th>
-                                <th class="py-3 px-3 text-right">กำไรปกติ (บาท)</th>
-                                <th class="py-3 px-3 text-center">
-                                    <div>% กำไรปกติ</div>
+                                <th class="py-3 px-3 text-right cursor-pointer hover:bg-slate-800 transition select-none" onclick="toggleHeaderSort('profit')" title="คลิกเพื่อสลับเรียงลำดับกำไร (มากไปน้อย / น้อยไปมาก)">
+                                    <div class="inline-flex items-center space-x-1">
+                                        <span>กำไรปกติ (บาท)</span>
+                                        <span class="text-[10px] text-sky-400">⇅</span>
+                                    </div>
+                                </th>
+                                <th class="py-3 px-3 text-center cursor-pointer hover:bg-slate-800 transition select-none" onclick="toggleHeaderSort('margin')" title="คลิกเพื่อสลับเรียงลำดับมาร์จิ้น %">
+                                    <div class="inline-flex items-center space-x-1">
+                                        <span>% กำไรปกติ</span>
+                                        <span class="text-[10px] text-sky-400">⇅</span>
+                                    </div>
                                     <div class="text-[10px] text-sky-300 font-normal">(จากราคาขาย)</div>
                                 </th>
                                 <th class="py-3 px-3 text-center bg-amber-500/20 text-amber-900 font-bold border-l-2 border-r-2 border-amber-400">
                                     ราคาขายเสนอพิเศษ (ลดราคา)
                                 </th>
-                                <th class="py-3 px-3 text-right bg-amber-500/10 font-bold">กำไรใหม่ (บาท)</th>
-                                <th class="py-3 px-3 text-center bg-amber-500/10 font-bold">
-                                    <div>% กำไรใหม่</div>
+                                <th class="py-3 px-3 text-right bg-amber-500/10 font-bold cursor-pointer hover:bg-amber-500/20 transition select-none" onclick="toggleHeaderSort('profit')" title="คลิกเพื่อสลับเรียงลำดับกำไร">
+                                    <div class="inline-flex items-center space-x-1">
+                                        <span>กำไรใหม่ (บาท)</span>
+                                        <span class="text-[10px] text-amber-800">⇅</span>
+                                    </div>
+                                </th>
+                                <th class="py-3 px-3 text-center bg-amber-500/10 font-bold cursor-pointer hover:bg-amber-500/20 transition select-none" onclick="toggleHeaderSort('margin')" title="คลิกเพื่อสลับเรียงลำดับมาร์จิ้น %">
+                                    <div class="inline-flex items-center space-x-1">
+                                        <span>% กำไรใหม่</span>
+                                        <span class="text-[10px] text-amber-800">⇅</span>
+                                    </div>
                                     <div class="text-[10px] text-amber-900 font-normal">(จากราคาขาย)</div>
                                 </th>
                                 <th class="py-3 px-3 text-center">จัดการ</th>

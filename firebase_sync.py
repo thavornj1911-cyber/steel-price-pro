@@ -12,7 +12,7 @@ FIREBASE_CONFIG_FILE = os.path.join(BASE_DIR, "static", "firebase-config.js")
 def generate_cloud_bundle() -> Dict[str, Any]:
     """
     Builds the complete pricing matrix bundle ready for Firestore.
-    Contains shop products, mapped 2S costs, profit margins, categories, and settings.
+    Contains shop products, mapped 2S costs, profit margins, categories, supplier products catalog, and settings.
     """
     settings = db.get_all_settings()
     factors = db.get_cost_factors()
@@ -28,15 +28,34 @@ def generate_cloud_bundle() -> Dict[str, Any]:
         cat_counts[c] = cat_counts.get(c, 0) + 1
 
     mappings = db.get_all_mappings()
+    supplier_prods = db.get_supplier_products()
+    
+    # Clean supplier products for compact size and rapid searching
+    cleaned_supplier = []
+    for sp in supplier_prods:
+        cleaned_supplier.append({
+            "id": sp["id"],
+            "supplier_name": sp.get("supplier_name", "2S Metal"),
+            "supplier_code": sp.get("supplier_code", ""),
+            "name": sp.get("name", ""),
+            "spec": sp.get("spec", ""),
+            "category": sp.get("category", ""),
+            "unit": sp.get("unit", "เส้น"),
+            "current_cost": sp.get("current_cost", 0.0),
+            "net_cost": sp.get("net_cost", 0.0),
+            "stock_status": sp.get("stock_status", "")
+        })
     
     now_str = datetime.now().strftime("%d/%m/%Y %H:%M น.")
     
     bundle = {
         "items": matrix_items,
+        "supplier_products": cleaned_supplier,
         "cost_config": factors,
         "category_counts": cat_counts,
         "total_shop_count": len(all_shop),
         "mapped_count": len(mappings),
+        "supplier_count": len(cleaned_supplier),
         "last_sync_time": f"ซิงค์สดเมื่อ {now_str}",
         "updated_at": datetime.now().isoformat(),
         "read_only": True
@@ -44,11 +63,26 @@ def generate_cloud_bundle() -> Dict[str, Any]:
     return bundle
 
 def export_local_bundle_file() -> str:
-    """Exports cloud_data.json locally for static hosting or testing."""
+    """Exports cloud_data.json and supplier_products.json locally and to Desktop folder."""
+    import shutil
     bundle = generate_cloud_bundle()
     out_path = os.path.join(BASE_DIR, "static", "cloud_data.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(bundle, f, ensure_ascii=False, indent=2)
+        
+    supp_path = os.path.join(BASE_DIR, "static", "supplier_products.json")
+    with open(supp_path, "w", encoding="utf-8") as f:
+        json.dump(bundle.get("supplier_products", []), f, ensure_ascii=False, indent=2)
+
+    # Sync to Desktop folder if present
+    desktop_dir = r"C:\Users\jkc\OneDrive - KMITL\Desktop\steel-price-app"
+    if os.path.exists(desktop_dir):
+        try:
+            shutil.copy2(out_path, os.path.join(desktop_dir, "cloud_data.json"))
+            shutil.copy2(supp_path, os.path.join(desktop_dir, "supplier_products.json"))
+        except Exception as e:
+            print(f"Warning: Could not copy to desktop dir: {e}")
+
     return out_path
 
 def sync_to_firestore_rest(project_id: str, bundle: Dict[str, Any], api_key: str = "") -> Tuple[bool, str]:

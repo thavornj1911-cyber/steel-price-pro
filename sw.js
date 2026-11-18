@@ -1,11 +1,11 @@
 // Service Worker for 2S Metal Cost Pro PWA
 const CACHE_NAME = 'steel-cost-pro-v1';
 const ASSETS_TO_CACHE = [
-  './',
-  './styles.css',
-  './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  '/',
+  '/static/styles.css',
+  '/static/manifest.json',
+  '/static/icons/icon-192.png',
+  '/static/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

@@ -679,6 +679,13 @@ def get_pricing_matrix(search: str = "", category: str = "", mapping_filter: str
         }
         results.append(item)
 
+    # Sort profit from high to low by default (mapped items with highest profit first, unmapped at bottom)
+    results.sort(key=lambda x: (
+        1 if x["is_mapped"] else 0,
+        x["normal_profit"] if x["is_mapped"] else -999999,
+        x["normal_margin_pct"] if x["is_mapped"] else -999999
+    ), reverse=True)
+
     return results
 
 if __name__ == "__main__":

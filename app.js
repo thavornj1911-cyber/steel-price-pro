@@ -358,6 +358,7 @@ function filterMatrixClientSide() {
     const category = appState.selectedCategory !== undefined ? appState.selectedCategory : (document.getElementById('categoryFilter')?.value || '');
     const mapping = document.getElementById('mappingFilter')?.value || 'all';
     const margin = document.getElementById('marginFilter')?.value || 'all';
+    const sortBy = document.getElementById('sortFilter')?.value || 'profit_desc';
 
     let items = appState.allCloudItems || [];
 
@@ -390,6 +391,9 @@ function filterMatrixClientSide() {
         items = items.filter(it => it.margin_status === 'good');
     }
 
+    // Sort items by user selection (Default: Profit from High to Low)
+    items = sortMatrixItems(items, sortBy);
+
     appState.matrix = items;
 
     // Calculate stats
@@ -413,6 +417,59 @@ function filterMatrixClientSide() {
     renderStats(stats);
     renderMatrixTable(items);
     renderMatrixCards(items);
+}
+
+// ----------------- Sorting Helper -----------------
+function sortMatrixItems(items, sortBy = 'profit_desc') {
+    return items.sort((a, b) => {
+        const pA = (a.discount_profit !== undefined) ? a.discount_profit : (a.normal_profit || 0);
+        const pB = (b.discount_profit !== undefined) ? b.discount_profit : (b.normal_profit || 0);
+        const mA = (a.discount_margin_pct !== undefined) ? a.discount_margin_pct : (a.normal_margin_pct || 0);
+        const mB = (b.discount_margin_pct !== undefined) ? b.discount_margin_pct : (b.normal_margin_pct || 0);
+        const priceA = a.discount_selling_price || a.selling_price || a.shop_selling_price || 0;
+        const priceB = b.discount_selling_price || b.selling_price || b.shop_selling_price || 0;
+
+        if (sortBy === 'profit_desc') {
+            // Mapped items with profits first
+            if (a.is_mapped && !b.is_mapped) return -1;
+            if (!a.is_mapped && b.is_mapped) return 1;
+            if (!a.is_mapped && !b.is_mapped) return (a.shop_code || '').localeCompare(b.shop_code || '');
+            if (pB !== pA) return pB - pA; // Descending: Largest profit first
+            return mB - mA;
+        } else if (sortBy === 'margin_desc') {
+            if (a.is_mapped && !b.is_mapped) return -1;
+            if (!a.is_mapped && b.is_mapped) return 1;
+            if (!a.is_mapped && !b.is_mapped) return (a.shop_code || '').localeCompare(b.shop_code || '');
+            if (mB !== mA) return mB - mA; // Descending: Highest margin % first
+            return pB - pA;
+        } else if (sortBy === 'profit_asc') {
+            if (a.is_mapped && !b.is_mapped) return -1;
+            if (!a.is_mapped && b.is_mapped) return 1;
+            if (!a.is_mapped && !b.is_mapped) return (a.shop_code || '').localeCompare(b.shop_code || '');
+            if (pA !== pB) return pA - pB; // Ascending: Lowest profit/loss first
+            return mA - mB;
+        } else if (sortBy === 'price_desc') {
+            return priceB - priceA;
+        } else if (sortBy === 'price_asc') {
+            return priceA - priceB;
+        } else if (sortBy === 'code_asc') {
+            return (a.shop_code || a.code || '').localeCompare(b.shop_code || b.code || '');
+        } else if (sortBy === 'name_asc') {
+            return (a.shop_name || a.name || '').localeCompare(b.shop_name || b.name || '');
+        }
+        return 0;
+    });
+}
+
+function toggleHeaderSort(col) {
+    const sel = document.getElementById('sortFilter');
+    if (!sel) return;
+    if (col === 'profit') {
+        sel.value = (sel.value === 'profit_desc') ? 'profit_asc' : 'profit_desc';
+    } else if (col === 'margin') {
+        sel.value = (sel.value === 'margin_desc') ? 'profit_desc' : 'margin_desc';
+    }
+    filterMatrix();
 }
 
 // Cloud sync trigger from Header
@@ -523,8 +580,11 @@ async function fetchMatrix() {
         }
 
         renderStats(data.stats);
-        renderMatrixTable(data.items);
-        renderMatrixCards(data.items);
+        const sortBy = document.getElementById('sortFilter')?.value || 'profit_desc';
+        const sortedItems = sortMatrixItems(data.items, sortBy);
+        appState.matrix = sortedItems;
+        renderMatrixTable(sortedItems);
+        renderMatrixCards(sortedItems);
     } catch (e) {
         console.error("Matrix error:", e);
     }
