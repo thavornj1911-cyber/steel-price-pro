@@ -1986,19 +1986,84 @@ async function saveAppSettings() {
 }
 
 function exportToCSV() {
-    const search = document.getElementById('searchInput').value;
-    const category = document.getElementById('categoryFilter').value;
-    const mapping = document.getElementById('mappingFilter').value;
-    const margin = document.getElementById('marginFilter').value;
+    const items = appState.matrix || [];
+    if (!items.length) {
+        showToast("ไม่พบข้อมูลสินค้าสำหรับส่งออก", "warning");
+        return;
+    }
 
-    const params = new URLSearchParams({
-        search: search,
-        category: category,
-        mapping_filter: mapping,
-        margin_filter: margin
+    const headers = [
+        "รหัสสินค้า", "ชื่อสินค้าของร้าน", "หมวดหมู่", "หน่วย",
+        "สินค้า 2S Metal ที่ผูกไว้", "สเปก 2S", "ต้นทุนสุทธิ 2S (บาท)",
+        "ราคาขายหน้าร้าน (บาท)", "กำไรปกติ (บาท)", "% กำไรปกติ",
+        "ราคาขายเสนอพิเศษ (บาท)", "กำไรใหม่ (บาท)", "% กำไรใหม่", "สถานะกำไร"
+    ];
+
+    const escapeCsv = (val) => {
+        if (val === null || val === undefined) return '""';
+        const str = String(val).replace(/"/g, '""');
+        return `"${str}"`;
+    };
+
+    let csvContent = '\uFEFF'; // UTF-8 BOM so Thai fonts render properly in Excel
+    csvContent += headers.map(escapeCsv).join(',') + '\r\n';
+
+    const lowThresh = parseFloat(appState.settings['low_margin_threshold'] || 8.0);
+    const goodThresh = parseFloat(appState.settings['good_margin_threshold'] || 15.0);
+
+    items.forEach(it => {
+        const shopId = it.shop_id;
+        const isMapped = it.is_mapped;
+        const effCost = it.effective_cost || 0;
+        const normalPrice = it.selling_price || 0;
+        const normalProfit = it.normal_profit || 0;
+        const normalMargin = it.normal_margin_pct || 0;
+
+        const discountPrice = appState.discounts[shopId] !== undefined ? appState.discounts[shopId] : normalPrice;
+        let discProfit = 0;
+        let discMargin = 0;
+        let statusLabel = it.status_label || (isMapped ? "ปกติ" : "ยังไม่จับคู่");
+
+        if (isMapped && effCost > 0 && discountPrice > 0) {
+            discProfit = discountPrice - effCost;
+            discMargin = (discProfit / discountPrice) * 100.0;
+            if (discProfit < 0) statusLabel = "ขาดทุน";
+            else if (discMargin < lowThresh) statusLabel = "กำไรต่ำ";
+            else if (discMargin >= goodThresh) statusLabel = "กำไรดี";
+            else statusLabel = "ปกติ";
+        }
+
+        const row = [
+            it.shop_code || '',
+            it.shop_name || '',
+            it.shop_category || '',
+            it.shop_unit || '',
+            it.supplier_name || (isMapped ? '' : 'ยังไม่จับคู่'),
+            it.supplier_spec || '',
+            isMapped ? effCost.toFixed(2) : '0.00',
+            normalPrice.toFixed(2),
+            normalProfit.toFixed(2),
+            `${normalMargin}%`,
+            discountPrice.toFixed(2),
+            discProfit.toFixed(2),
+            `${discMargin.toFixed(1)}%`,
+            statusLabel
+        ];
+        csvContent += row.map(escapeCsv).join(',') + '\r\n';
     });
 
-    window.location.href = `/api/export-csv?${params.toString()}`;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+    a.download = `steel_price_export_${dateStr}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("ส่งออกไฟล์ Excel (CSV) เรียบร้อยแล้ว", "success");
 }
 
 // ----------------- UI Helpers -----------------
