@@ -315,6 +315,22 @@ function renderCloudBundle(bundle) {
     appState.matrix = bundle.items || [];
     appState.categoryCounts = bundle.category_counts || {};
     appState.totalShopCount = bundle.total_shop_count || appState.matrix.length;
+    appState.supplierProducts = bundle.supplier_products || [];
+
+    // Fallback: If supplier_products was not in bundle, load supplier_products.json
+    if (!appState.supplierProducts || appState.supplierProducts.length === 0) {
+        fetch('./supplier_products.json')
+            .then(res => res.ok ? res.json() : [])
+            .then(prods => {
+                if (prods && prods.length > 0) {
+                    appState.supplierProducts = prods;
+                    applyLocalCustomMappings();
+                }
+            })
+            .catch(e => console.warn("supplier_products.json fetch note:", e));
+    } else {
+        applyLocalCustomMappings();
+    }
     
     // Header sync time indicator
     const headerLastSync = document.getElementById('headerLastSync');
@@ -1346,13 +1362,30 @@ async function openMappingModal(shopId) {
     appState.selectedShopForMapping = shopId;
     appState.modal2sCategory = '';
     const modal = document.getElementById('modalLink');
-    const shopItem = appState.matrix.find(it => it.shop_id === shopId) || appState.shopProducts.find(it => it.id === shopId);
+    const shopItem = (appState.matrix || []).find(it => it.shop_id === shopId || it.id === shopId) 
+                  || (appState.allCloudItems || []).find(it => it.shop_id === shopId || it.id === shopId)
+                  || (appState.shopProducts || []).find(it => it.id === shopId);
     
     if (!shopItem) return;
 
-    document.getElementById('modalShopCode').textContent = shopItem.shop_code || shopItem.code;
-    document.getElementById('modalShopName').textContent = shopItem.shop_name || shopItem.name;
-    document.getElementById('modalShopPrice').textContent = `฿${(shopItem.selling_price || 0).toLocaleString()}`;
+    // Ensure 2S supplier products are loaded
+    if (!appState.supplierProducts || appState.supplierProducts.length === 0) {
+        try {
+            const resSupp = await fetch('./supplier_products.json');
+            if (resSupp.ok) {
+                appState.supplierProducts = await resSupp.json();
+            } else {
+                const resApi = await fetch('/api/supplier-products');
+                if (resApi.ok) appState.supplierProducts = await resApi.json();
+            }
+        } catch (e) {
+            console.warn("Could not load supplier products in modal:", e);
+        }
+    }
+
+    document.getElementById('modalShopCode').textContent = shopItem.shop_code || shopItem.code || '';
+    document.getElementById('modalShopName').textContent = shopItem.shop_name || shopItem.name || '';
+    document.getElementById('modalShopPrice').textContent = `฿${(shopItem.selling_price || shopItem.shop_selling_price || 0).toLocaleString()}`;
     document.getElementById('modalMultiplier').value = shopItem.multiplier || 1.0;
     document.getElementById('modalNotes').value = shopItem.mapping_notes || '';
 
@@ -1388,60 +1421,163 @@ async function openMappingModal(shopId) {
     modal.classList.remove('hidden');
     lucide.createIcons();
 
-    try {
-        const res = await fetch(`/api/mappings/suggest/${shopId}`);
-        const data = await res.json();
-        
-        if (data.suggestions && data.suggestions.length > 0) {
-            suggContainer.innerHTML = data.suggestions.map(s => `
-                <div onclick="selectSuggestion(${s.id})" class="p-2.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 cursor-pointer flex items-center justify-between transition group shadow-xs">
-                    <div class="flex-1 min-w-0 pr-2">
-                        <div class="text-xs font-semibold text-slate-800 truncate">${escapeHtml(s.name)}</div>
-                        <div class="text-[11px] text-slate-500 truncate">${escapeHtml(s.spec || '')} • สต๊อก: ${s.stock_status}</div>
-                    </div>
-                    <div class="text-right flex items-center space-x-2 flex-shrink-0">
-                        <div>
-                            <div class="text-xs font-bold text-blue-600 font-mono">฿${s.current_cost.toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
-                            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-semibold">ตรง ${s.match_score}%</span>
-                        </div>
-                        <button type="button" onclick="selectAndSaveSuggestion(event, ${s.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold shadow transition flex items-center gap-1" title="ผูกสินค้านี้ทันทีและบันทึก">
-                            <span>ผูกทันที</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        } else {
-            suggContainer.innerHTML = `<div class="text-xs text-slate-400 p-2 bg-slate-50 rounded-lg border border-slate-100">ไม่พบสเปกที่แนะนำตรงกันชัดเจน สามารถพิมพ์ค้นหาเลือกจากรายการ 2S Metal ด้านล่างได้เลย</div>`;
+    if (appState.isCloudMode) {
+        renderClientMatchSuggestions(shopItem, suggContainer);
+    } else {
+        try {
+            const res = await fetch(`/api/mappings/suggest/${shopId}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.suggestions && data.suggestions.length > 0) {
+                    renderSuggestionCards(data.suggestions, suggContainer);
+                } else {
+                    renderClientMatchSuggestions(shopItem, suggContainer);
+                }
+            } else {
+                renderClientMatchSuggestions(shopItem, suggContainer);
+            }
+        } catch (e) {
+            renderClientMatchSuggestions(shopItem, suggContainer);
         }
-    } catch (e) {
-        console.error(e);
-        suggContainer.innerHTML = `<div class="text-xs text-slate-400 p-2">ค้นหาสินค้าจากรายการด้านล่าง</div>`;
     }
+}
+
+function renderClientMatchSuggestions(shopItem, container) {
+    if (!container) return;
+    const shopName = (shopItem.shop_name || shopItem.name || '').toLowerCase();
+    const prods = appState.supplierProducts || [];
+    if (prods.length === 0) {
+        container.innerHTML = `<div class="text-xs text-slate-400 p-2 bg-slate-50 rounded-lg">พิมพ์ค้นหาจากรายการ 2S ด้านล่างได้เลย</div>`;
+        return;
+    }
+
+    // Dimension extract
+    const dimMatch = shopName.match(/(\d+(?:\.\d+)?)\s*[xX*]\s*(\d+(?:\.\d+)?)/);
+    const dimPair = dimMatch ? [dimMatch[1], dimMatch[2]] : null;
+
+    // Thickness extract
+    const thMatch = shopName.match(/(\d+\.\d+)\s*(?:mm|มม)?/);
+    const thickness = thMatch ? thMatch[1] : null;
+
+    const isGI = /gi|กัลวาไนซ์|ขาว|ชุบ/.test(shopName);
+    const isRect = /แบน|rhs/.test(shopName);
+
+    const scored = [];
+    for (const p of prods) {
+        const comb = `${p.supplier_code || ''} ${p.name || ''} ${p.spec || ''} ${p.category || ''}`.toLowerCase();
+        let score = 0;
+
+        if (dimPair) {
+            const p1 = `${dimPair[0]}" x ${dimPair[1]}"`;
+            const p2 = `${dimPair[0]}x${dimPair[1]}`;
+            const p3 = `${dimPair[0]}*${dimPair[1]}`;
+            if (comb.includes(p1) || comb.includes(p2) || comb.includes(p3)) {
+                score += 45;
+            }
+        }
+
+        if (thickness && comb.includes(thickness)) {
+            score += 35;
+        }
+
+        if (isGI) {
+            if (comb.includes(' g ') || comb.includes('gi') || comb.includes('กัลวาไนซ์') || (p.supplier_code && (p.supplier_code.endsWith('g') || p.supplier_code.endsWith('gn')))) {
+                score += 20;
+            }
+        } else {
+            if (!comb.includes(' g ') && !comb.includes('gi') && !comb.includes('กัลวาไนซ์')) {
+                score += 10;
+            }
+        }
+
+        if (isRect && (comb.includes('แบน') || comb.includes('rhs') || comb.includes('ท่อแบน'))) {
+            score += 10;
+        }
+
+        if (score >= 45) {
+            scored.push({
+                ...p,
+                match_score: Math.min(100, score)
+            });
+        }
+    }
+
+    scored.sort((a, b) => b.match_score - a.match_score);
+    const topMatches = scored.slice(0, 5);
+
+    if (topMatches.length > 0) {
+        renderSuggestionCards(topMatches, container);
+    } else {
+        container.innerHTML = `<div class="text-xs text-slate-400 p-2 bg-slate-50 rounded-lg border border-slate-100">ไม่พบสเปกที่แนะนำตรงกันชัดเจน สามารถพิมพ์ค้นหาเลือกจากรายการ 2S Metal ด้านล่างได้เลย</div>`;
+    }
+}
+
+function renderSuggestionCards(suggestions, container) {
+    container.innerHTML = suggestions.map(s => {
+        const netCost = s.net_cost || (s.current_cost * 1.0593);
+        return `
+        <div onclick="selectSuggestion(${s.id})" class="p-2.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 cursor-pointer flex items-center justify-between transition group shadow-xs">
+            <div class="flex-1 min-w-0 pr-2">
+                <div class="text-xs font-semibold text-slate-800 truncate">${escapeHtml(s.name)}</div>
+                <div class="text-[11px] text-slate-500 truncate">${escapeHtml(s.spec || s.category || '')} • รหัส: ${escapeHtml(s.supplier_code || '')} • สต๊อก: ${s.stock_status || 'พร้อมส่ง'}</div>
+            </div>
+            <div class="text-right flex items-center space-x-2 flex-shrink-0">
+                <div>
+                    <div class="text-xs font-bold text-blue-600 font-mono">฿${netCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-semibold">ตรง ${s.match_score || 90}%</span>
+                </div>
+                <button type="button" onclick="selectAndSaveSuggestion(event, ${s.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold shadow transition flex items-center gap-1" title="ผูกสินค้านี้ทันทีและบันทึก">
+                    <span>ผูกทันที</span>
+                </button>
+            </div>
+        </div>
+    `;
+    }).join('');
 }
 
 // Filter and browse ALL 2S Metal items in modal
 function filterModal2sList() {
     const q = (document.getElementById('modal2sSearch')?.value || '').toLowerCase().trim();
-    const cat = appState.modal2sCategory || '';
+    const cat = (appState.modal2sCategory || '').toLowerCase();
     const selectedId = parseInt(document.getElementById('modalSupplierSelect')?.value || '0');
 
     let items = appState.supplierProducts || [];
 
     if (cat) {
-        items = items.filter(it => it.category === cat);
+        items = items.filter(it => {
+            const itCat = (it.category || '').toLowerCase();
+            const itName = (it.name || '').toLowerCase();
+            if (cat.includes('ท่อประปา')) return itCat.includes('ประปา') || itName.includes('ประปา');
+            if (cat.includes('กล่องดำ')) return (itCat.includes('กล่อง') || itCat.includes('shs')) && !itCat.includes('gi') && !itName.includes(' g');
+            if (cat.includes('กล่องแบน')) return itCat.includes('แบน') || itName.includes('ท่อแบน') || itName.includes('กล่องแบน');
+            if (cat.includes('กัลวาไนซ์') || cat.includes('gi')) return itCat.includes('gi') || itCat.includes('กัลวาไนซ์') || itName.includes(' gi') || itName.includes(' g ') || itName.includes('กัลวาไนซ์');
+            if (cat.includes('ท่อดำ') || cat.includes('ท่อเหล็กดำ')) return (itCat.includes('ท่อเหล็กดำ') || itCat.includes('round')) && !itCat.includes('ประปา');
+            if (cat.includes('ตัวซี')) return itCat.includes('ตัวซี') || itCat.includes('c-channel') || itName.includes('ตัวซี');
+            if (cat.includes('ฉาก')) return itCat.includes('ฉาก') || itCat.includes('angle') || itName.includes('ฉาก');
+            if (cat.includes('แบน')) return itCat.includes('แบน') || itName.includes('เหล็กแบน');
+            if (cat.includes('เส้น') || cat.includes('ข้ออ้อย')) return itCat.includes('เส้น') || itCat.includes('ข้ออ้อย') || itName.includes('ข้ออ้อย') || itName.includes('กลม');
+            return itCat.includes(cat);
+        });
     }
 
     if (q) {
-        const tokens = q.split(/\s+/).filter(t => t);
+        const tokens = q.split(/\s+/).filter(Boolean);
         items = items.filter(it => {
             const combined = `${it.supplier_code || ''} ${it.name || ''} ${it.spec || ''} ${it.category || ''}`.toLowerCase();
-            return tokens.every(token => combined.includes(token));
+            return tokens.every(token => {
+                if (combined.includes(token)) return true;
+                const m = token.match(/^(\d+(?:\.\d+)?)[xX*](\d+(?:\.\d+)?)$/);
+                if (m) {
+                    return combined.includes(`${m[1]}" x ${m[2]}"`) || combined.includes(`${m[1]}x${m[2]}`);
+                }
+                return false;
+            });
         });
     }
 
     const countText = document.getElementById('modal2sCountText');
     if (countText) {
-        countText.textContent = `พบ ${items.length} รายการ (จากทั้งหมด ${appState.supplierProducts.length} รายการ)`;
+        countText.textContent = `พบ ${items.length} รายการ (จากทั้งหมด ${(appState.supplierProducts || []).length} รายการ)`;
     }
 
     renderModal2sList(items, selectedId);
@@ -1510,7 +1646,7 @@ function renderModal2sList(items, selectedId) {
 
 function selectModal2sItem(suppId, reFilter = true) {
     document.getElementById('modalSupplierSelect').value = suppId;
-    const supp = appState.supplierProducts.find(s => s.id === suppId);
+    const supp = (appState.supplierProducts || []).find(s => s.id === suppId);
     const banner = document.getElementById('modalSelected2sBanner');
     
     if (supp && banner) {
@@ -1605,12 +1741,20 @@ async function restoreMappings(input) {
 
 async function confirmSaveMapping() {
     const shopId = appState.selectedShopForMapping;
-    const suppId = parseInt(document.getElementById('modalSupplierSelect').value);
-    const multiplier = parseFloat(document.getElementById('modalMultiplier').value) || 1.0;
-    const notes = document.getElementById('modalNotes').value;
+    const suppId = parseInt(document.getElementById('modalSupplierSelect')?.value || '0');
+    const multiplier = parseFloat(document.getElementById('modalMultiplier')?.value || '1.0') || 1.0;
+    const notes = document.getElementById('modalNotes')?.value || '';
 
     if (!suppId) {
         showToast("กรุณาเลือกสินค้า 2S Metal ที่ต้องการจับคู่", "error");
+        return;
+    }
+
+    if (appState.isCloudMode) {
+        saveCloudMapping(shopId, suppId, multiplier, notes);
+        closeModal('modalLink');
+        showToast("✓ บันทึกการจับคู่สินค้าเรียบร้อย (บันทึกในเครื่องนี้)", "success");
+        filterMatrixClientSide();
         return;
     }
 
@@ -1631,14 +1775,132 @@ async function confirmSaveMapping() {
             showToast("บันทึกการจับคู่สินค้าเรียบร้อย (ระบบจดจำถาวร)", "success");
             fetchStatus();
             await Promise.all([fetchMatrix(), loadMappingWorkspace()]);
+        } else {
+            showToast(data.message || "ข้อผิดพลาดในการบันทึก", "error");
         }
     } catch (e) {
-        showToast("ข้อผิดพลาดในการบันทึก", "error");
+        saveCloudMapping(shopId, suppId, multiplier, notes);
+        closeModal('modalLink');
+        showToast("✓ บันทึกการจับคู่สินค้าเรียบร้อย (โหมดออฟไลน์)", "success");
+        filterMatrixClientSide();
     }
 }
 
-async function unlinkMapping(mappingId) {
+function saveCloudMapping(shopId, suppId, multiplier, notes) {
+    const supp = (appState.supplierProducts || []).find(s => s.id === suppId);
+    if (!supp) return;
+
+    const updateItem = (item) => {
+        if (!item) return;
+        item.is_mapped = true;
+        item.supplier_id = supp.id;
+        item.supplier_code = supp.supplier_code;
+        item.supplier_name = supp.name;
+        item.supplier_spec = supp.spec;
+        item.supplier_cost = supp.current_cost;
+        item.raw_supplier_cost = supp.current_cost;
+        item.multiplier = multiplier;
+        item.mapping_notes = notes;
+        
+        const netCost = (supp.net_cost || (supp.current_cost * 1.0593)) * multiplier;
+        item.effective_cost = netCost;
+        
+        const sp = item.discount_selling_price || item.selling_price || item.shop_selling_price || 0;
+        item.normal_profit = sp - netCost;
+        item.normal_margin_pct = sp > 0 ? ((sp - netCost) / sp) * 100 : 0;
+        item.discount_profit = item.normal_profit;
+        item.discount_margin_pct = item.normal_margin_pct;
+    };
+
+    const it1 = (appState.allCloudItems || []).find(it => it.shop_id === shopId || it.id === shopId);
+    const it2 = (appState.matrix || []).find(it => it.shop_id === shopId || it.id === shopId);
+    updateItem(it1);
+    updateItem(it2);
+
+    try {
+        const stored = JSON.parse(localStorage.getItem('steel_local_mappings') || '{}');
+        stored[shopId] = {
+            supplier_product_id: suppId,
+            multiplier: multiplier,
+            notes: notes,
+            saved_at: new Date().toISOString()
+        };
+        localStorage.setItem('steel_local_mappings', JSON.stringify(stored));
+    } catch (e) {
+        console.error("Local mapping save error:", e);
+    }
+}
+
+function applyLocalCustomMappings() {
+    try {
+        const stored = JSON.parse(localStorage.getItem('steel_local_mappings') || '{}');
+        for (const shopId in stored) {
+            const m = stored[shopId];
+            const sid = parseInt(shopId);
+            const supp = (appState.supplierProducts || []).find(s => s.id === m.supplier_product_id);
+            if (!supp) continue;
+
+            const targets = [
+                (appState.allCloudItems || []).find(it => it.shop_id === sid || it.id === sid),
+                (appState.matrix || []).find(it => it.shop_id === sid || it.id === sid)
+            ];
+
+            targets.forEach(item => {
+                if (!item) return;
+                item.is_mapped = true;
+                item.supplier_id = supp.id;
+                item.supplier_code = supp.supplier_code;
+                item.supplier_name = supp.name;
+                item.supplier_spec = supp.spec;
+                item.supplier_cost = supp.current_cost;
+                item.raw_supplier_cost = supp.current_cost;
+                item.multiplier = m.multiplier || 1.0;
+                item.mapping_notes = m.notes || '';
+                const netCost = (supp.net_cost || (supp.current_cost * 1.0593)) * item.multiplier;
+                item.effective_cost = netCost;
+                const sp = item.discount_selling_price || item.selling_price || item.shop_selling_price || 0;
+                item.normal_profit = sp - netCost;
+                item.normal_margin_pct = sp > 0 ? ((sp - netCost) / sp) * 100 : 0;
+                item.discount_profit = item.normal_profit;
+                item.discount_margin_pct = item.normal_margin_pct;
+            });
+        }
+    } catch (e) {
+        console.warn("Failed to apply local mappings:", e);
+    }
+}
+
+async function unlinkMapping(mappingId, shopId) {
     if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการยกเลิกการจับคู่สินค้านี้?")) return;
+    
+    if (appState.isCloudMode) {
+        try {
+            const stored = JSON.parse(localStorage.getItem('steel_local_mappings') || '{}');
+            if (shopId && stored[shopId]) {
+                delete stored[shopId];
+                localStorage.setItem('steel_local_mappings', JSON.stringify(stored));
+            }
+        } catch(e) {}
+        
+        const it = (appState.matrix || []).find(m => m.mapping_id === mappingId || m.shop_id === shopId || m.id === shopId);
+        if (it) {
+            it.is_mapped = false;
+            it.supplier_id = null;
+            it.supplier_name = null;
+            it.supplier_code = null;
+            it.supplier_spec = null;
+            it.supplier_cost = 0;
+            it.effective_cost = 0;
+            it.normal_profit = 0;
+            it.normal_margin_pct = 0;
+            it.discount_profit = 0;
+            it.discount_margin_pct = 0;
+        }
+        showToast("ยกเลิกการจับคู่เรียบร้อย", "info");
+        filterMatrixClientSide();
+        return;
+    }
+
     try {
         const res = await fetch(`/api/mappings/${mappingId}`, {method: 'DELETE'});
         const data = await res.json();
@@ -1792,7 +2054,7 @@ function filterSupplierTable() {
 
     const badge = document.getElementById('suppCountBadge');
     if (badge) {
-        badge.textContent = `พบ ${filtered.length} รายการ (จากทั้งหมด ${appState.supplierProducts.length})`;
+        badge.textContent = `พบ ${filtered.length} รายการ (จากทั้งหมด ${(appState.supplierProducts || []).length})`;
     }
 
     renderSupplierTable(filtered);
