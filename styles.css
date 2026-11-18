@@ -1,0 +1,65 @@
+/* Custom CSS for Steel Price & Margin Pro */
+
+body {
+    background-color: #f8fafc;
+    font-family: 'Kanit', sans-serif;
+}
+
+.font-prompt {
+    font-family: 'Prompt', sans-serif;
+}
+
+/* Nav Tabs */
+.nav-tab {
+    color: #94a3b8;
+}
+.nav-tab:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+.nav-tab.active {
+    color: #ffffff;
+    background-color: #0284c7;
+    font-weight: 600;
+}
+
+/* Table styling */
+.discount-input {
+    transition: all 0.15s ease-in-out;
+}
+.discount-input:focus {
+    background-color: #ffffff !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25) !important;
+}
+
+/* Animation */
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.animate-scale-up {
+    animation: scaleUp 0.18s ease-out forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

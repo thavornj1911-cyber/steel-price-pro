@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.env
+
+# Local Databases (Contains proprietary shop prices & costs)
+*.db
+*.sqlite3
+sample_data/
+
+# Firebase & Secret Keys (DO NOT PUSH SECRETS TO GITHUB)
+serviceAccountKey.json
+*-adminsdk-*.json
+firebase-debug.log
+firestore-debug.log
+
+# Operating System
+.DS_Store
+Thumbs.db

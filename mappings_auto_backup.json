@@ -1,0 +1,1109 @@
+[
+  {
+    "shop_code": "130101002",
+    "shop_name": "ท่อประปา 3/4 นิ้ว(เหลือง)",
+    "supplier_code": "GP020S-FSI",
+    "supplier_name": "ท่อประปา 3/4\" S-FSI คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:29:37"
+  },
+  {
+    "shop_code": "130101003",
+    "shop_name": "ท่อประปา 1 นิ้ว(เหลือง)",
+    "supplier_code": "GP025S-FSI",
+    "supplier_name": "ท่อประปา 1\" S (FSI) คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:29:42"
+  },
+  {
+    "shop_code": "130101005",
+    "shop_name": "ท่อประปา 1 1/2 นิ้ว(เหลือง)",
+    "supplier_code": "GP038S-FSI",
+    "supplier_name": "ท่อประปา 1.1/2\" S (FSI) คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:29:50"
+  },
+  {
+    "shop_code": "130101006",
+    "shop_name": "ท่อประปา 2 นิ้ว(เหลือง) 1.9มม 18กก.",
+    "supplier_code": "GP050S-FSI",
+    "supplier_name": "ท่อประปา 2\" S (FSI) คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:29:57"
+  },
+  {
+    "shop_code": "130101008",
+    "shop_name": "ท่อประปา 3 นิ้ว(เหลือง)",
+    "supplier_code": "GP075S-FSI",
+    "supplier_name": "ท่อประปา 3\" S-FSI คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:31:43"
+  },
+  {
+    "shop_code": "130101009",
+    "shop_name": "ท่อประปา 4 นิ้ว(เหลือง)",
+    "supplier_code": "GP100S-FSI",
+    "supplier_name": "ท่อประปา 4\" S-FSI คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:32:17"
+  },
+  {
+    "shop_code": "130101010",
+    "shop_name": "ท่อประปา 2 1/2เหลือง",
+    "supplier_code": "GP065S-FSI",
+    "supplier_name": "ท่อประปา 2.1/2\" S-FSI คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:32:26"
+  },
+  {
+    "shop_code": "130101012",
+    "shop_name": "ท่อประปา 1 1/4 นิ้ว(เหลือง)",
+    "supplier_code": "GP032S-FSI",
+    "supplier_name": "ท่อประปา 1.1/4\" S (FSI) คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:32:34"
+  },
+  {
+    "shop_code": "130101012-1",
+    "shop_name": "ท่อประปา 3/4 นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP020M-FSI",
+    "supplier_name": "ท่อประปา 3/4\" M-FSI คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:32:44"
+  },
+  {
+    "shop_code": "130101013",
+    "shop_name": "ท่อประปาซิงค์ 1/2นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP015M-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์ 1/2\"M(FSI) คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:32:49"
+  },
+  {
+    "shop_code": "130101014",
+    "shop_name": "ท่อประปาซิงค์ 1 นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP025M-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์ 1\"M(FSI) คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:32:59"
+  },
+  {
+    "shop_code": "130101015",
+    "shop_name": "ท่อประปาซิงค์ 1 1/4 นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP032M-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์ 1.1/4\"M(FSI) คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:33:36"
+  },
+  {
+    "shop_code": "130101016",
+    "shop_name": "ท่อประปาซิงค์ 2 นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP050M-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์ 2\"M(FSI) คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:33:41"
+  },
+  {
+    "shop_code": "130101017",
+    "shop_name": "ท่อประปาซิงค์ 1 1/2 นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP038M-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์  1.1/2\" M(FSI) คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:33:55"
+  },
+  {
+    "shop_code": "130101018",
+    "shop_name": "ท่อประปาซิงค์ 2 1/2 นิ้ว(น้ำเงิน)",
+    "supplier_code": "GP065S-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์ 2.1/2\"S(FSI) คาดเหลือง",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:34:14"
+  },
+  {
+    "shop_code": "130101019",
+    "shop_name": "ท่อประปาซิงค์ 3/4 นิ้ว นง",
+    "supplier_code": "GP020M-Z-FSI",
+    "supplier_name": "ท่อประปาซิงค์ 3/4\"M(FSI) คาดน้ำเงิน",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:34:45"
+  },
+  {
+    "shop_code": "130103001",
+    "shop_name": "เหล็กกล่องGI 1/2*1/2 1.5มม ขาว/เหลือง",
+    "supplier_code": "SP012130G",
+    "supplier_name": "ท่อเหลี่ยม G 1/2\" x 1/2\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:36:29"
+  },
+  {
+    "shop_code": "130103002",
+    "shop_name": "เหล็กกล่องGI 3/4x3/4 1.2mm ขาว/ฟ้า",
+    "supplier_code": "SP020110G",
+    "supplier_name": "ท่อเหลี่ยม G 3/4\" x  3/4\" x  1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:37:47"
+  },
+  {
+    "shop_code": "130103003",
+    "shop_name": "เหล็กกล่องGI 3/4x3/4 1.5mm ขาว/เหลือง",
+    "supplier_code": "SP020130G",
+    "supplier_name": "ท่อเหลี่ยม G 3/4\" x 3/4\" x  1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:38:04"
+  },
+  {
+    "shop_code": "130103004",
+    "shop_name": "เหล็กกล่องGI 1x1 1.2mm ขาว/ฟ้า",
+    "supplier_code": "SP025110GN-GSP",
+    "supplier_name": "ท่อเหลี่ยม G 1\" x 1\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:39:29"
+  },
+  {
+    "shop_code": "130103005",
+    "shop_name": "เหล็กกล่องGI 1x1 1.1mm ขาว/ดำ",
+    "supplier_code": "SP025100GN-GSP",
+    "supplier_name": "ท่อเหลี่ยม G 1\" x 1\" x 1.00 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:41:10"
+  },
+  {
+    "shop_code": "130103006",
+    "shop_name": "เหล็กกล่องGI 1x1 1.5mm ขาว/เหลือง",
+    "supplier_code": "SP025130GN-YNN",
+    "supplier_name": "ท่อเหลี่ยม G 1\" x 1\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:50:07"
+  },
+  {
+    "shop_code": "130103006-1",
+    "shop_name": "เหล็กกล่องGI 1x1 1.8mm ขาว/แดง",
+    "supplier_code": "SP025150G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 1\" x 1\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:50:28"
+  },
+  {
+    "shop_code": "130103007",
+    "shop_name": "เหล็กกล่องGI 1 1/4x1 1/4 1.5mm ขาว/เหลือง",
+    "supplier_code": "SP032130G",
+    "supplier_name": "ท่อเหลี่ยม G 1.1/4\" x  1.1/4\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:50:48"
+  },
+  {
+    "shop_code": "130103008",
+    "shop_name": "เหล็กกล่องGI 1 1/2x1 1/2 1.5mm ขาว/เหลือง",
+    "supplier_code": "SP040130G",
+    "supplier_name": "ท่อเหลี่ยม G 1.1/2\" x 1.1/2\" x 1.30  มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:53:51"
+  },
+  {
+    "shop_code": "130103009",
+    "shop_name": "เหล็กกล่องGI 1 1/2*1 1/2 1.2mm ขาว/ฟ้า",
+    "supplier_code": "SP040110GN-YN",
+    "supplier_name": "ท่อเหลี่ยม G 1.1/2\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:54:13"
+  },
+  {
+    "shop_code": "130103009-6",
+    "shop_name": "เหล็กกล่องGI 6x6 หนา2.3มม",
+    "supplier_code": "SP150230GN",
+    "supplier_name": "ท่อเหลี่ยม G 6\" x 6\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:55:37"
+  },
+  {
+    "shop_code": "1301030091",
+    "shop_name": "เหล็กกล่องGI 2x2 หนา1.5mm ขาว/เหลือง",
+    "supplier_code": "SP050130G",
+    "supplier_name": "ท่อเหลี่ยม G 2\" x 2\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:57:04"
+  },
+  {
+    "shop_code": "13010300911",
+    "shop_name": "เหล็กกล่องGI 2x2 หนา1.2mm ขาว/ฟ้า",
+    "supplier_code": "SP050110GN-YN",
+    "supplier_name": "ท่อเหลี่ยม G 2\" x 2\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:57:37"
+  },
+  {
+    "shop_code": "13010300912",
+    "shop_name": "เหล็กกล่องGI 2x2 หนา1.8mm ขาว/แดง",
+    "supplier_code": "SP050150G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 2\" x 2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 10:58:23"
+  },
+  {
+    "shop_code": "13010300913",
+    "shop_name": "เหล็กกล่องGI 2x2 หนา2.3mm ขาว มอก",
+    "supplier_code": "SP050210G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 2\" x 2\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:00:14"
+  },
+  {
+    "shop_code": "1301030092",
+    "shop_name": "เหล็กกล่องGI 4*4 หนา1.8mm ขาว/แดง",
+    "supplier_code": "SP100150G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 4\" x 4\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:00:31"
+  },
+  {
+    "shop_code": "13010300921",
+    "shop_name": "เหล็กกล่องGI 4*4 หนา1.5mm ขาว/เหลือง",
+    "supplier_code": "SP100130GN-YN",
+    "supplier_name": "ท่อเหลี่ยม G 4\" x 4\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:10:33"
+  },
+  {
+    "shop_code": "13010300922",
+    "shop_name": "เหล็กกล่องGI 4*4 หนา2mm ขาว/ชมพู",
+    "supplier_code": "SP100180GN-YN",
+    "supplier_name": "ท่อเหลี่ยม G 4\" x 4\" x 1.80 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:10:51"
+  },
+  {
+    "shop_code": "13010300923",
+    "shop_name": "เหล็กกล่องGI 4*4 หนา2.3mm ขาว มอก",
+    "supplier_code": "SP100210G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 4\" x 4\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:11:01"
+  },
+  {
+    "shop_code": "1301030093",
+    "shop_name": "เหล็กกล่องGI 3x3 หนา1.8มม ขาว/แดง",
+    "supplier_code": "SP075150G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 3\" x 3\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:14:20"
+  },
+  {
+    "shop_code": "13010300931",
+    "shop_name": "เหล็กกล่องGI 3x3 หนา2มม ขาว/ชมพู",
+    "supplier_code": "SP075185G",
+    "supplier_name": "ท่อเหลี่ยม G 3\" x3\" x  1.85 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:15:30"
+  },
+  {
+    "shop_code": "13010300932",
+    "shop_name": "เหล็กกล่องGI 3x3 หนา2.3มม ขาว/ชมพู",
+    "supplier_code": "SP075210G-TIS",
+    "supplier_name": "ท่อเหลี่ยม G 3\" x 3\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:15:42"
+  },
+  {
+    "shop_code": "13010300933",
+    "shop_name": "เหล็กกล่องGI 5x5 หนา2มม ขาว/ชมพู",
+    "supplier_code": "SP125180G",
+    "supplier_name": "ท่อเหลี่ยม G 5\" x 5\" x 1.80 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:16:06"
+  },
+  {
+    "shop_code": "130103010",
+    "shop_name": "เหล็กกล่องแบนGI 2x1 1mm ขาว/ดำ",
+    "supplier_code": "RP050025100GN-YNN",
+    "supplier_name": "ท่อแบน G 2\" x 1\" x 1.00 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:57:03"
+  },
+  {
+    "shop_code": "1301030101",
+    "shop_name": "เหล็กกล่องแบนGI 2x1 1.5mm ขาว/เหลือง",
+    "supplier_code": "RP050025130G",
+    "supplier_name": "ท่อแบน G 2\" x 1\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:58:12"
+  },
+  {
+    "shop_code": "1301030111",
+    "shop_name": "เหล็กกล่องแบนGI 2x1 1.2mm ขาว/ฟ้า",
+    "supplier_code": "RP050025110",
+    "supplier_name": "ท่อแบน 2\" x 1\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:46:28"
+  },
+  {
+    "shop_code": "1301030112",
+    "shop_name": "เหล็กกล่องแบนGI 2x1 1.8mm ขาว/แดง",
+    "supplier_code": "RP050025150",
+    "supplier_name": "ท่อแบน 2\" x 1\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:46:42"
+  },
+  {
+    "shop_code": "130103012",
+    "shop_name": "เหล็กกล่องแบนGI 3x1 1/2 1.2mm ขาว/ฟ้า",
+    "supplier_code": "RP075038110",
+    "supplier_name": "ท่อแบน 3\" x 1.1/2\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:47:27"
+  },
+  {
+    "shop_code": "1301030121",
+    "shop_name": "เหล็กกล่องแบนGI 3x1 1/2 หนา1mm ขาว/ดำ",
+    "supplier_code": "RP075038100GN-GSP",
+    "supplier_name": "ท่อแบน G 3\" x 1.1/2\" x 1.00 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:56:00"
+  },
+  {
+    "shop_code": "130103013",
+    "shop_name": "เหล็กกล่องแบนGI 3x1 1/2 1.5mm ขาว/เหลือง",
+    "supplier_code": "RP075038130GN-GSP",
+    "supplier_name": "ท่อแบน G 3\" x 1.1/2\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:58:34"
+  },
+  {
+    "shop_code": "130103014",
+    "shop_name": "เหล็กกล่องแบนGI 3*1 1/2 1.6มม มอก ขาว/แดง",
+    "supplier_code": "RP075038150G-TIS",
+    "supplier_name": "ท่อแบน G 3\" x 1.1/2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 11:54:57"
+  },
+  {
+    "shop_code": "1301030141",
+    "shop_name": "เหล็กกล่องแบนGI 3*1 1/2 2mm ขาว/ชมพู",
+    "supplier_code": "RP075038185G-TIS",
+    "supplier_name": "ท่อแบน G 3\" x 1.1/2\" x 2.00 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:00:29"
+  },
+  {
+    "shop_code": "1301030142",
+    "shop_name": "เหล็กกล่องแบนGI 3*1 1/2 2.3mm มอก",
+    "supplier_code": "RP075038210G-TIS",
+    "supplier_name": "ท่อแบน G 3\" x 1.1/2\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:00:47"
+  },
+  {
+    "shop_code": "130103015",
+    "shop_name": "เหล็กกล่องแบนGI 4x2 1.2mm ขาว/ฟ้า",
+    "supplier_code": "RP100050110GN-YNN",
+    "supplier_name": "ท่อแบน G 4\" x 2\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:01:32"
+  },
+  {
+    "shop_code": "130103016",
+    "shop_name": "เหล็กกล่องแบนGI 4x2 1.5mm ขาว/เหลือง",
+    "supplier_code": "RP100050130GN-YNN",
+    "supplier_name": "ท่อแบน G 4\" x 2\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:01:55"
+  },
+  {
+    "shop_code": "130103017",
+    "shop_name": "เหล็กกล่องแบนGI 4x2 1.6มม มอก ขาว/แดง",
+    "supplier_code": "RP100050150G-TIS",
+    "supplier_name": "ท่อแบน G 4\" x 2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:02:19"
+  },
+  {
+    "shop_code": "1301030171",
+    "shop_name": "เหล็กกล่องแบนGI 4x2 2mm ขาว/ชมพู",
+    "supplier_code": "RP100050185G",
+    "supplier_name": "ท่อแบน G 4\" x 2\" x 1.85 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:03:00"
+  },
+  {
+    "shop_code": "1301030172",
+    "shop_name": "เหล็กกล่องแบนGI 4x2 2.3mm ขาว มอก",
+    "supplier_code": "RP100050210G-TIS",
+    "supplier_name": "ท่อแบน G 4\" x 2\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:03:16"
+  },
+  {
+    "shop_code": "130103018",
+    "shop_name": "เหล็กกล่องแบนGI 5x2 1.8mm ขาว/แดง",
+    "supplier_code": "RP125050150G-TIS",
+    "supplier_name": "ท่อแบน G 5\" x 2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:03:40"
+  },
+  {
+    "shop_code": "130103019",
+    "shop_name": "เหล็กกล่องแบนGI 5x2 2mm ขาว/ชมพุ",
+    "supplier_code": "RP125050170G-TIS",
+    "supplier_name": "ท่อแบน G 5\" x 2\" x 1.80 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:04:13"
+  },
+  {
+    "shop_code": "1301030191",
+    "shop_name": "เหล็กกล่องแบนGI 5x2 2.3mm ขาว มอก",
+    "supplier_code": "RP125050210G-TIS",
+    "supplier_name": "ท่อแบน G 5\" x 2\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:04:28"
+  },
+  {
+    "shop_code": "130103020",
+    "shop_name": "เหล็กกล่องแบนGI 6x2 1.8mm ขาว/แดง",
+    "supplier_code": "RP150050150G-TIS",
+    "supplier_name": "ท่อแบน G 6\" x 2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:05:32"
+  },
+  {
+    "shop_code": "130103021",
+    "shop_name": "เหล็กกล่องแบนGI 6x2 2mm ขาว/ชมพู",
+    "supplier_code": "RP150050170G-TIS",
+    "supplier_name": "ท่อแบน G 6\" x 2\" x 1.80 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:06:09"
+  },
+  {
+    "shop_code": "1301030211",
+    "shop_name": "เหล็กกล่องแบนGI 6x2 2.3mm ขาว มอก",
+    "supplier_code": "RP150050210G-TIS",
+    "supplier_name": "ท่อแบน G 6\" x 2\" x 2.30 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:06:35"
+  },
+  {
+    "shop_code": "130105001",
+    "shop_name": "เหล็กฉาก 1นิ้วx3.0mm",
+    "supplier_code": "AG0250300N-ZUB",
+    "supplier_name": "เหล็กฉาก 25 x 3.0 มม. (ZUBB)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:09:08"
+  },
+  {
+    "shop_code": "130105002",
+    "shop_name": "เหล็กฉาก 1 1/4นิ้วx3.0mm",
+    "supplier_code": "AG0300300N-ZUB",
+    "supplier_name": "เหล็กฉาก 30 x 3.0 มม. (ZUBB)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:09:23"
+  },
+  {
+    "shop_code": "130105004",
+    "shop_name": "เหล็กฉาก 1 1/2นิ้วx4.0mm",
+    "supplier_code": "AG0400300N-ZUB",
+    "supplier_name": "เหล็กฉาก 40 x 3.0 มม. (ZUBB)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:09:41"
+  },
+  {
+    "shop_code": "130105005",
+    "shop_name": "เหล็กฉาก 2นิ้วx4.0mm",
+    "supplier_code": "AG0500400N-ZUB",
+    "supplier_name": "เหล็กฉาก 50 x 4.0 มม. (ZUBB)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:09:57"
+  },
+  {
+    "shop_code": "130105006",
+    "shop_name": "เหล็กฉาก 3นิ้วx6.0mm",
+    "supplier_code": "AG0750600N-ZUB",
+    "supplier_name": "เหล็กฉาก 75 x 6.0 มม. (ZUBB)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:10:22"
+  },
+  {
+    "shop_code": "130107003",
+    "shop_name": "เหล็กเส้นกลมsr24 6mmx10m",
+    "supplier_code": "RB06010N-TXS",
+    "supplier_name": "เส้นกลม พับ 6 x 10 - TXS/IF",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:14:02"
+  },
+  {
+    "shop_code": "130107004",
+    "shop_name": "เหล็กเส้นกลมsr24 9mmx10m",
+    "supplier_code": "RB09010N-TXS",
+    "supplier_name": "เส้นกลม พับ 9 x 10 - TXS/IF",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:14:19"
+  },
+  {
+    "shop_code": "130107005",
+    "shop_name": "เหล็กเส้นข้ออ้อย SD40 10mmx10m(6.16)",
+    "supplier_code": "DB10010SD40N0617-TXS",
+    "supplier_name": "ข้ออ้อย พับ SD40 - DB10 x 10 ม. - TXS/IF",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:14:46"
+  },
+  {
+    "shop_code": "130107006",
+    "shop_name": "เหล็กเส้นข้ออ้อย SD40 12mmx10m(8.88)",
+    "supplier_code": "DB10012SD40N0880-TXS",
+    "supplier_name": "ข้ออ้อย พับ SD40 - DB12 x 10 ม. - TXS/IF",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:14:54"
+  },
+  {
+    "shop_code": "130107008",
+    "shop_name": "เหล็กเส้นข้ออ้อย SD40 16mmx10m(15.78)",
+    "supplier_code": "DB10016SD40N1578-TXS",
+    "supplier_name": "ข้ออ้อย พับ SD40 - DB16 x 10 ม. - TXS/IF",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:15:03"
+  },
+  {
+    "shop_code": "130108001",
+    "shop_name": "ท่อดำ 1/2นิ้ว หนา 1.5 mm",
+    "supplier_code": "BP0150130",
+    "supplier_name": "ท่อดำ 1/2\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:17:27"
+  },
+  {
+    "shop_code": "130108002",
+    "shop_name": "ท่อดำ 3/4นิ้ว หนา1.5 mm",
+    "supplier_code": "BP0200130",
+    "supplier_name": "ท่อดำ 3/4\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:17:39"
+  },
+  {
+    "shop_code": "130108003",
+    "shop_name": "ท่อดำ 1นิ้ว หนา1.5 mm",
+    "supplier_code": "BP0250130",
+    "supplier_name": "ท่อดำ 1\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:17:46"
+  },
+  {
+    "shop_code": "130108004",
+    "shop_name": "ท่อดำ 1 1/4นิ้ว หนา1.5 mm",
+    "supplier_code": "BP0320130",
+    "supplier_name": "ท่อดำ 1.1/4\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:17:58"
+  },
+  {
+    "shop_code": "130108005",
+    "shop_name": "ท่อดำ 1 1/2นิ้ว หนา1.8 mm",
+    "supplier_code": "BP0400130",
+    "supplier_name": "ท่อดำ 1.1/2\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:18:47"
+  },
+  {
+    "shop_code": "130108006",
+    "shop_name": "ท่อดำ 1 1/2นิ้ว หนา1.2 mm",
+    "supplier_code": "BP0400110",
+    "supplier_name": "ท่อดำ 1.1/2\" x 1.10 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:19:03"
+  },
+  {
+    "shop_code": "130108007",
+    "shop_name": "ท่อดำ 2นิ้ว หนา1.8mm",
+    "supplier_code": "BP0500150",
+    "supplier_name": "ท่อดำ 2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:19:26"
+  },
+  {
+    "shop_code": "130108008",
+    "shop_name": "ท่อดำ 3นิ้ว หนา2.0mm",
+    "supplier_code": "BP0800190",
+    "supplier_name": "ท่อดำ 3\" x 2.00 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:19:48"
+  },
+  {
+    "shop_code": "130108011",
+    "shop_name": "เหล็กกลม GI 1นิ้ว 1.6มม มอก",
+    "supplier_code": "BP0250150G-TIS",
+    "supplier_name": "ท่อกลม G 1\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:20:49"
+  },
+  {
+    "shop_code": "130108012",
+    "shop_name": "เหล็กกลม GI 1 1/2นิ้ว 1.6มม มอก",
+    "supplier_code": "BP0400150G-TIS",
+    "supplier_name": "ท่อกลม G 1.1/2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:20:59"
+  },
+  {
+    "shop_code": "130109001",
+    "shop_name": "เหล็กแบนรีด 1 1/4นิ้ว 4มม 6กก.",
+    "supplier_code": "FB00320300N-NES",
+    "supplier_name": "แบนตัด 32 x 3.00 มม. (เหลือง)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 12:22:51"
+  },
+  {
+    "shop_code": "130109002",
+    "shop_name": "เหล็กแบนรีด 1นิ้ว 3mm",
+    "supplier_code": "FB00250300N-NES",
+    "supplier_name": "แบนตัด 25 x 3.00 มม.(เหลือง)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:33:42"
+  },
+  {
+    "shop_code": "130109003",
+    "shop_name": "เหล็กแบนรีด 1 1/2นิ้ว 4mm",
+    "supplier_code": "FB00380400N-NES",
+    "supplier_name": "แบนตัด 38 x 4.00 มม. (เหลือง)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:35:06"
+  },
+  {
+    "shop_code": "130109004",
+    "shop_name": "เหล็กแบนรีด 2นิ้ว 4มม.",
+    "supplier_code": "FB00500400N-NES",
+    "supplier_name": "แบนตัด 50 x 4.00 มม.(เหลือง)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:35:27"
+  },
+  {
+    "shop_code": "130109005",
+    "shop_name": "เหล็กแบนรีด 3นิ้ว 6mm",
+    "supplier_code": "FB00750600N-NES",
+    "supplier_name": "แบนตัด 75 x 6.00 มม. (เหลือง)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:35:46"
+  },
+  {
+    "shop_code": "130109006",
+    "shop_name": "เหล็กสี่เหลี่ยมตัน 1/2นิ้ว",
+    "supplier_code": "SB010N",
+    "supplier_name": "เหล็กสี่เหลี่ยมตัน 1/2\" (มัดละ 50 เส้น)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:35:56"
+  },
+  {
+    "shop_code": "130109010",
+    "shop_name": "เหล็กเพลาขาว 1/2นิ้ว",
+    "supplier_code": "BS012N",
+    "supplier_name": "เหล็กเพลาขาว 1/2\"",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:36:15"
+  },
+  {
+    "shop_code": "130109013",
+    "shop_name": "เหล็กกลม 1/2นิ้ว GI",
+    "supplier_code": "BP0150120G",
+    "supplier_name": "ท่อกลม G 1/2\" x 1.20 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:38:12"
+  },
+  {
+    "shop_code": "130109014",
+    "shop_name": "เหล็กกลม GI 3/4\" 1.3มม",
+    "supplier_code": "BP0200130G",
+    "supplier_name": "ท่อกลม G 3/4\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:38:34"
+  },
+  {
+    "shop_code": "130109015",
+    "shop_name": "เหล็กกลม GI 1 1/4\" 1.5มม",
+    "supplier_code": "BP0320130G",
+    "supplier_name": "ท่อกลม G 1.1/4\" x 1.30 มม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:38:54"
+  },
+  {
+    "shop_code": "130109016",
+    "shop_name": "เหล็กกลม GI 1 1/2\" 1.8มม",
+    "supplier_code": "BP0400150G-TIS",
+    "supplier_name": "ท่อกลม G 1.1/2\" x 1.60 มม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:39:17"
+  },
+  {
+    "shop_code": "130110001",
+    "shop_name": "ไวร์เมช2.8มม 20cm ม้วนเล็ก 2*25",
+    "supplier_code": "WM20202000280250",
+    "supplier_name": "ไวร์เมช 2.8มม.@ 20 X 20 ซม. x 2 ม. x 25 ม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:39:43"
+  },
+  {
+    "shop_code": "130110002",
+    "shop_name": "ไวร์เมช2.8มม 20cm ม้วนใหญ่ 2*50",
+    "supplier_code": "WM20202000300500",
+    "supplier_name": "ไวร์เมช 3.0 มม.@ 20 X 20 ซม. X 2 ม. X 50 ม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:40:00"
+  },
+  {
+    "shop_code": "130110003",
+    "shop_name": "ไวร์เมช3.6มม 20cm ม้วนใหญ่ 2*50",
+    "supplier_code": "WM20202000360500",
+    "supplier_name": "ไวร์เมช 3.6 มม.@ 20 x 20 ซม. x 2 x 50 ม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:40:25"
+  },
+  {
+    "shop_code": "130110004",
+    "shop_name": "ไวร์เมช4มม. 20cm ม้วนเล็ก 2*25",
+    "supplier_code": "WM20202000400250",
+    "supplier_name": "ไวร์เมช 4.0 มม.@ 20 x 20 ซม. x 2 x 25 ม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:40:45"
+  },
+  {
+    "shop_code": "130110005",
+    "shop_name": "ไวร์เมช4มม. 20cm ม้วนใหญ่ 3ม*50ม",
+    "supplier_code": "WM20203000400500",
+    "supplier_name": "ไวร์เมช 4.0 มม.@ 20 x 20 ซม. x 3 x 50 ม. มอก.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:41:10"
+  },
+  {
+    "shop_code": "130111003",
+    "shop_name": "เหล็กแปสำเร็จ 2s 0.65มม 4กก.",
+    "supplier_code": "PA30656",
+    "supplier_name": "แป GI 30 x 0.65 มม. x 6 ม.",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:41:35"
+  },
+  {
+    "shop_code": "1303001",
+    "shop_name": "เหล็กปอกเสา-คาน4*4 หนา4มม.",
+    "supplier_code": "SR1001000550-S25",
+    "supplier_name": "เหล็กปลอก 100 x 100 x 5.5 มม. (0.09กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:42:32"
+  },
+  {
+    "shop_code": "130300101",
+    "shop_name": "เหล็กปอกเสา-คาน5*5",
+    "supplier_code": "SR1251250550-S25",
+    "supplier_name": "เหล็กปลอก 125 x 125 x 5.5 มม. (0.11กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:43:00"
+  },
+  {
+    "shop_code": "130300102",
+    "shop_name": "เหล็กปอกเสา-คาน6*6 หนา5.5มม.",
+    "supplier_code": "SR1251250550-S25",
+    "supplier_name": "เหล็กปลอก 125 x 125 x 5.5 มม. (0.11กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:43:26"
+  },
+  {
+    "shop_code": "130300103",
+    "shop_name": "เหล็กปอกเสา-คาน4*6 หนา5.5มม.",
+    "supplier_code": "SR1001500550-S25",
+    "supplier_name": "เหล็กปลอก 100 x 150 x 5.5 มม. (0.11กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:43:45"
+  },
+  {
+    "shop_code": "130300104",
+    "shop_name": "เหล็กปอกเสา-คาน4*8 หนา5.5มม.",
+    "supplier_code": "SR1002000550-S25",
+    "supplier_name": "เหล็กปลอก 100 x 200 x 5.5 มม. (0.13กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:44:07"
+  },
+  {
+    "shop_code": "130300105",
+    "shop_name": "เหล็กปอกเสา-คาน4*10 หนา5.5มม.",
+    "supplier_code": "SR1002500550-S25",
+    "supplier_name": "เหล็กปลอก 100 x 250 x 5.5 มม. (0.15กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:44:25"
+  },
+  {
+    "shop_code": "130300106",
+    "shop_name": "เหล็กปอกเสา-คาน4*12 หนา5.5มม.",
+    "supplier_code": "SR1003000550-S25",
+    "supplier_name": "เหล็กปลอก 100 x 300 x 5.5 มม. (0.17กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:44:47"
+  },
+  {
+    "shop_code": "130300107",
+    "shop_name": "เหล็กปอกเสา-คาน6*10 หนา5.5มม.",
+    "supplier_code": "SR1502500550-S25",
+    "supplier_name": "เหล็กปลอก 150 x 250 x 5.5 มม. (0.17กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:45:02"
+  },
+  {
+    "shop_code": "130300108",
+    "shop_name": "เหล็กปอกเสา-คาน6*12 หนา5.5มม.",
+    "supplier_code": "SR1503000550-S25",
+    "supplier_name": "เหล็กปลอก 150 x 300 x 5.5 มม. (0.19กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:45:28"
+  },
+  {
+    "shop_code": "130300109",
+    "shop_name": "เหล็กปอกเสา-คาน6*14 หนา5.5มม.",
+    "supplier_code": "SR1503500550-S25",
+    "supplier_name": "เหล็กปลอก 150 x 350 x 5.5 มม. (0.21กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:45:48"
+  },
+  {
+    "shop_code": "130300113",
+    "shop_name": "เหล็กปลอกเสา-คาน 8*8",
+    "supplier_code": "SR2002000550-S25",
+    "supplier_name": "เหล็กปลอก 200 x 200 x 5.5 มม. (0.17กก./เส้น) 25 กก.",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:46:39"
+  },
+  {
+    "shop_code": "1308002w16",
+    "shop_name": "ลวดขาว #16",
+    "supplier_code": "WR0160GN-25",
+    "supplier_name": "ลวดกัลวาไนซ์ 1.6 มม. #16 - 25 กก. (เย็น)",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:48:24"
+  },
+  {
+    "shop_code": "1308003w18",
+    "shop_name": "ลวดขาว#18",
+    "supplier_code": "WR0120GN",
+    "supplier_name": "ลวดกัลวาไนซ์ 1.2 มม. #18 - 25 กก. (เย็น)",
+    "multiplier": 0.04,
+    "notes": "",
+    "updated_at": "2026-11-18 13:48:41"
+  },
+  {
+    "shop_code": "1309006",
+    "shop_name": "กิ๊บลวดหนามตัววี 4นิ้ว ขาว",
+    "supplier_code": "BWC040290-C20N",
+    "supplier_name": "กิ๊บลวดหนาม 4'' x 20 กก. 2.90mm. (1,460 ชิ้น)",
+    "multiplier": 0.05,
+    "notes": "",
+    "updated_at": "2026-11-18 13:49:54"
+  },
+  {
+    "shop_code": "1309006-1",
+    "shop_name": "กิ๊บลวดหนามตัววี 5นิ้ว ขาว",
+    "supplier_code": "BWC050290-C20N",
+    "supplier_name": "กิ๊บลวดหนาม 5'' x 20 กก. 2.90mm. (1,260 ชิ้น)",
+    "multiplier": 0.05,
+    "notes": "",
+    "updated_at": "2026-11-18 13:50:03"
+  },
+  {
+    "shop_code": "131000212110",
+    "shop_name": "ตะแกรงเหล็ก#12 1*10เมตร ตา2นิ้ว",
+    "supplier_code": "CM0500501002351000",
+    "supplier_name": "ตาข่ายถัก 2\" x 1 x 10m. #12 เต็ม (2.35)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:58:46"
+  },
+  {
+    "shop_code": "131000312155",
+    "shop_name": "ตะแกรงเหล็ก#12 1.5*5เมตร ตา2นิ้ว",
+    "supplier_code": "CM0560561502350500",
+    "supplier_name": "ตาข่ายถัก 2\" x 1.5 x 5m. #12 (2.35)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:58:04"
+  },
+  {
+    "shop_code": "131000412110",
+    "shop_name": "ตะแกรงเหล็ก#12 1.5เมตร*10เมตร ตา2นิ้ว",
+    "supplier_code": "CM0500501502351000",
+    "supplier_name": "ตาข่ายถัก 2\" x 1.5 x 10m. #12 เต็ม (2.35)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:57:35"
+  },
+  {
+    "shop_code": "1310005",
+    "shop_name": "ตะแกรงเหล็ก#10 1*10เมตร ตา2นิ้ว",
+    "supplier_code": "CM0560561003001000N",
+    "supplier_name": "ตาข่ายถัก 2\" x 1 x 10 m. #11",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:57:08"
+  },
+  {
+    "shop_code": "1310007",
+    "shop_name": "ตะแกรงเหล็กฉีก 4*8 12.2กก 2.3มม",
+    "supplier_code": "EM12192438XS31GN",
+    "supplier_name": "ตะแกรงฉีกชุบกัลวาไนซ์ 4' x 8' XS-31",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:55:42"
+  },
+  {
+    "shop_code": "1310007-1",
+    "shop_name": "ตะแกรงเหล็กฉีก 4*8 5.76กก. 1มม",
+    "supplier_code": "EM12192438XS31LN-BHW",
+    "supplier_name": "ตะแกรงฉีก 4' x 8' XS-31(ขาวเหลือง)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:55:23"
+  },
+  {
+    "shop_code": "1310008",
+    "shop_name": "ตาข่ายถักปม 10ซม 0.9ม.*30ม.*2.5/2มม",
+    "supplier_code": "KM10102002000900300",
+    "supplier_name": "ตาข่ายถักปม 10 ซม. 0.90 x 30 ม. (2.00 มม.)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:54:42"
+  },
+  {
+    "shop_code": "1310009",
+    "shop_name": "ตาข่ายถักปม 10ซม 1.2ม.*30ม 2.5/2มม",
+    "supplier_code": "KM10102002001200300",
+    "supplier_name": "ตาข่ายถักปม 10 ซม. 1.20 x 30 ม. (2.00 มม.)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:54:32"
+  },
+  {
+    "shop_code": "1310010",
+    "shop_name": "ตาข่ายถักปม 10ซม 1.5ม*30ม 2.5/2มม",
+    "supplier_code": "KM10102002001500300",
+    "supplier_name": "ตาข่ายถักปม 10 ซม. 1.50 x 30 ม. (2.00 มม.)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:54:09"
+  },
+  {
+    "shop_code": "1310011",
+    "shop_name": "ตาข่ายถัก 1 1/2นิ้ว*1ม*10ม #12เต็ม",
+    "supplier_code": "CM0440441002351000N",
+    "supplier_name": "ตาข่ายถัก 1.1/2\" x 1 x 10m. #12 (2.35)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:52:58"
+  },
+  {
+    "shop_code": "1310013",
+    "shop_name": "ตาข่ายถักปม 10ซม 1.8ม*30ม 2.5/2มม",
+    "supplier_code": "KM10102002001800300",
+    "supplier_name": "ตาข่ายถักปม 10 ซม. 1.80 x 30 ม. (2.00 มม.)",
+    "multiplier": 1.0,
+    "notes": "",
+    "updated_at": "2026-11-18 13:52:05"
+  }
+]
