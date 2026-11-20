@@ -2081,18 +2081,43 @@ async function autoLinkHighConfidence() {
 
 // ----------------- 2S Metal Sync & Actions -----------------
 function openSyncModal() {
-    document.getElementById('modalSync').classList.remove('hidden');
-    document.getElementById('syncProgressMsg').classList.add('hidden');
+    const modal = document.getElementById('modalSync');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    const progressMsg = document.getElementById('syncProgressMsg');
+    if (progressMsg) progressMsg.classList.add('hidden');
+
+    const cloudNotice = document.getElementById('cloudSyncNotice');
+    const btnExecuteSync = document.getElementById('btnExecuteSync');
+
+    if (appState.isCloudMode) {
+        if (cloudNotice) cloudNotice.classList.remove('hidden');
+        if (btnExecuteSync) {
+            btnExecuteSync.innerHTML = `<i data-lucide="info" class="w-4 h-4"></i><span>วิธีอัปเดตราคา</span>`;
+        }
+    } else {
+        if (cloudNotice) cloudNotice.classList.add('hidden');
+        if (btnExecuteSync) {
+            btnExecuteSync.innerHTML = `<i data-lucide="download-cloud" class="w-4 h-4"></i><span>เริ่มดึงราคาเดี๋ยวนี้</span>`;
+        }
+    }
+
     lucide.createIcons();
 }
 
 async function executeSyncLive() {
+    const progressMsg = document.getElementById('syncProgressMsg');
+    const btn = document.getElementById('btnExecuteSync');
+
+    if (appState.isCloudMode) {
+        progressMsg.className = "p-3 rounded-lg text-xs font-medium bg-amber-50 text-amber-900 block border border-amber-200 leading-relaxed";
+        progressMsg.innerHTML = `⚠️ <b>ไม่สามารถดึงราคาสดผ่าน GitHub Pages ได้โดยตรง</b><br>เนื่องจากระบบความปลอดภัยเบราว์เซอร์ (CORS) ป้องกันไม่ให้เว็บภายนอกเชื่อมต่อไปยัง 2S Metal<br><br>💡 <b>วิธีอัปเดตราคาล่าสุด:</b><br>1. เปิดคอมพิวเตอร์ของคุณ<br>2. ดับเบิ้ลคลิกไฟล์ <b><code>อัปเดตราคา_2S_ล่าสุด.bat</code></b> บนหน้า Desktop<br>3. นำไฟล์ <code>cloud_data.json</code> อัปโหลดขึ้น GitHub เท่านี้ราคาบนมือถือก็จะอัปเดตทันทีครับ!`;
+        return;
+    }
+
     const user = document.getElementById('syncModalUser').value.trim();
     const pass = document.getElementById('syncModalPass').value.trim();
     const cookie = document.getElementById('syncModalCookie').value.trim();
-
-    const progressMsg = document.getElementById('syncProgressMsg');
-    const btn = document.getElementById('btnExecuteSync');
 
     progressMsg.className = "p-3 rounded-lg text-xs font-medium bg-blue-50 text-blue-700 block border border-blue-200";
     progressMsg.innerHTML = `<div class="flex items-center space-x-2"><div class="w-3.5 h-3.5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div><span>กำลังเชื่อมต่อไปยัง 2S Metal DConnect...</span></div>`;
@@ -2108,6 +2133,15 @@ async function executeSyncLive() {
                 session_cookie: cookie
             })
         });
+
+        if (!res.ok) {
+            throw new Error(`เซิร์ฟเวอร์ตอบกลับสถานะ HTTP ${res.status}`);
+        }
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("เซิร์ฟเวอร์ไม่ได้เปิดใช้งาน API สำหรับดึงราคา กรุณารัน run_app.bat บนคอมพิวเตอร์");
+        }
+
         const data = await res.json();
         if (data.success) {
             progressMsg.className = "p-3 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 block border border-emerald-200";

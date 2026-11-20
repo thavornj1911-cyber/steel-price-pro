@@ -352,14 +352,14 @@ def batch_upsert_supplier_products(products: List[Dict[str, Any]]) -> int:
 
         # Check existing to track price movement (prev_cost)
         if code:
-            c.execute("SELECT id, current_cost FROM supplier_products WHERE supplier_code = ?", (code,))
+            c.execute("SELECT id, current_cost, prev_cost FROM supplier_products WHERE supplier_code = ?", (code,))
         else:
-            c.execute("SELECT id, current_cost FROM supplier_products WHERE name = ?", (name,))
+            c.execute("SELECT id, current_cost, prev_cost FROM supplier_products WHERE name = ?", (name,))
         existing = c.fetchone()
 
         if existing:
             old_cost = float(existing["current_cost"] or 0.0)
-            old_prev = float(existing["prev_cost"] or 0.0)
+            old_prev = float(existing["prev_cost"] or 0.0) if "prev_cost" in existing.keys() else old_cost
             if cost > 0 and abs(cost - old_cost) > 0.001:
                 prev_cost = old_cost  # Cost changed! Track old cost
             else:
