@@ -189,49 +189,73 @@
         <!-- ==================== TAB 1: PRICING MATRIX & MARGIN CALCULATOR ==================== -->
         <div id="tab-pricing" class="tab-content space-y-6">
             
-            <!-- Dashboard KPI Cards -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                        <i data-lucide="layers" class="w-6 h-6"></i>
+            <!-- Dashboard KPI Cards & 2S Price Movement -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-3">
+                    <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl flex-shrink-0">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500">สินค้าในตาราง</p>
-                        <h3 id="statTotal" class="text-2xl font-bold text-slate-800">0</h3>
-                        <p id="statMapped" class="text-xs text-blue-600 font-medium">ผูกแล้ว 0 รายการ</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                        <i data-lucide="trending-up" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500">อัตรากำไรเฉลี่ย</p>
-                        <h3 id="statAvgMargin" class="text-2xl font-bold text-emerald-600">0%</h3>
-                        <p id="statGood" class="text-xs text-emerald-600 font-medium">กำไรดี (>15%) : 0</p>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-medium text-slate-500 truncate">สินค้าในตาราง</p>
+                        <h3 id="statTotal" class="text-xl font-bold text-slate-800">0</h3>
+                        <p id="statMapped" class="text-[10px] text-blue-600 font-medium truncate">ผูกแล้ว 0 รายการ</p>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
-                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-3">
+                    <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl flex-shrink-0">
+                        <i data-lucide="percent" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500">สินค้ากำไรต่ำ</p>
-                        <h3 id="statWarning" class="text-2xl font-bold text-amber-600">0</h3>
-                        <p class="text-xs text-amber-600 font-medium">Margin ต่ำกว่า 8%</p>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-medium text-slate-500 truncate">มาร์จิ้นเฉลี่ย</p>
+                        <h3 id="statAvgMargin" class="text-xl font-bold text-emerald-600">0%</h3>
+                        <p id="statGood" class="text-[10px] text-emerald-600 font-medium truncate">กำไรดี (&gt;15%): 0</p>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
-                    <div class="p-3 bg-rose-50 text-rose-600 rounded-xl">
-                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                <!-- 2S Price UP Card (Click to Filter) -->
+                <div onclick="filterByPriceTrend('up')" class="bg-white p-3.5 rounded-xl border border-rose-200 shadow-sm flex items-center space-x-3 cursor-pointer hover:bg-rose-50/60 hover:border-rose-400 transition group" title="คลิกเพื่อกรองดูเฉพาะรายการที่ 2S ปรับราคาขึ้น">
+                    <div class="p-2.5 bg-rose-100 text-rose-700 rounded-xl group-hover:scale-110 transition flex-shrink-0">
+                        <i data-lucide="trending-up" class="w-5 h-5"></i>
                     </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500">เสี่ยงขาดทุน (ขายต่ำกว่าทุน)</p>
-                        <h3 id="statLoss" class="text-2xl font-bold text-rose-600">0</h3>
-                        <p class="text-xs text-rose-500 font-medium">ราคาขาย &lt; ต้นทุน 2S</p>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-bold text-rose-700 truncate">2S ปรับขึ้น ▲</p>
+                        <h3 id="statPriceUp" class="text-xl font-bold text-rose-700">0</h3>
+                        <p class="text-[10px] text-rose-500 font-medium truncate">ต้นทุนเพิ่ม (คลิกดู)</p>
+                    </div>
+                </div>
+
+                <!-- 2S Price DOWN Card (Click to Filter) -->
+                <div onclick="filterByPriceTrend('down')" class="bg-white p-3.5 rounded-xl border border-emerald-200 shadow-sm flex items-center space-x-3 cursor-pointer hover:bg-emerald-50/60 hover:border-emerald-400 transition group" title="คลิกเพื่อกรองดูเฉพาะรายการที่ 2S ปรับราคาลง">
+                    <div class="p-2.5 bg-emerald-100 text-emerald-700 rounded-xl group-hover:scale-110 transition flex-shrink-0">
+                        <i data-lucide="trending-down" class="w-5 h-5"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-bold text-emerald-700 truncate">2S ปรับลง ▼</p>
+                        <h3 id="statPriceDown" class="text-xl font-bold text-emerald-700">0</h3>
+                        <p class="text-[10px] text-emerald-600 font-medium truncate">ต้นทุนลดลง (คลิกดู)</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-3">
+                    <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl flex-shrink-0">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-medium text-slate-500 truncate">สินค้ากำไรต่ำ</p>
+                        <h3 id="statWarning" class="text-xl font-bold text-amber-600">0</h3>
+                        <p class="text-[10px] text-amber-600 font-medium truncate">Margin &lt; 8%</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
+                    <div class="p-2.5 bg-rose-50 text-rose-600 rounded-xl flex-shrink-0">
+                        <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-medium text-slate-500 truncate">เสี่ยงขาดทุน</p>
+                        <h3 id="statLoss" class="text-xl font-bold text-rose-600">0</h3>
+                        <p class="text-[10px] text-rose-500 font-medium truncate">ขาย &lt; ทุน 2S</p>
                     </div>
                 </div>
             </div>
@@ -316,17 +340,35 @@
                         </select>
                     </div>
 
+                    <!-- 2S Price Trend Filter -->
+                    <div class="w-full md:w-48">
+                        <select id="priceTrendFilter" onchange="filterMatrix()" class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="all">ราคา 2S: ทั้งหมด</option>
+                            <option value="up">🔺 2S ปรับขึ้น (ต้นทุนเพิ่ม)</option>
+                            <option value="down">🔻 2S ปรับลง (ต้นทุนลด)</option>
+                            <option value="same">⚖️ 2S ราคาคงที่</option>
+                        </select>
+                    </div>
+
                     <!-- Sort Order Filter -->
                     <div class="w-full md:w-56">
                         <select id="sortFilter" onchange="filterMatrix()" class="w-full py-2 px-3 bg-blue-50/60 border border-blue-300 text-blue-900 font-semibold rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs">
                             <option value="profit_desc" selected>💰 เรียง: กำไรมาก ➔ น้อย (บาท)</option>
                             <option value="margin_desc">📈 เรียง: กำไร % มาก ➔ น้อย</option>
+                            <option value="trend_up">🔺 เรียงราคา 2S ขึ้นมากสุด</option>
+                            <option value="trend_down">🔻 เรียงราคา 2S ลงมากสุด</option>
                             <option value="profit_asc">⚠️ เรียง: กำไรน้อย ➔ มาก (เสี่ยงขาดทุน)</option>
                             <option value="price_desc">🏷️ เรียง: ราคาขายมาก ➔ น้อย</option>
                             <option value="code_asc">🔢 ตามรหัสสินค้า</option>
                             <option value="name_asc">🔤 ตามชื่อสินค้า</option>
                         </select>
                     </div>
+
+                    <!-- Price Trends Report Button -->
+                    <button onclick="openPriceTrendsModal()" class="flex items-center justify-center space-x-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-sm font-medium transition" title="ดูสรุปรายการเหล็กที่ 2S ปรับราคาขึ้นและลง">
+                        <i data-lucide="trending-up" class="w-4 h-4"></i>
+                        <span class="whitespace-nowrap">ดูราคาขึ้น-ลง 2S</span>
+                    </button>
 
                     <!-- Export Button -->
                     <button onclick="exportToCSV()" class="flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition">
@@ -767,6 +809,103 @@
         </div>
 
     </main>
+
+    <!-- Modal: 2S Price Movements & History -->
+    <div id="modalPriceTrends" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-4xl w-full p-6 space-y-4 shadow-2xl animate-scale-up max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b pb-3 flex-shrink-0">
+                <div class="flex items-center space-x-2.5">
+                    <div class="p-2.5 bg-rose-50 text-rose-600 rounded-xl">
+                        <i data-lucide="trending-up" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">รายงานความเคลื่อนไหวราคา 2S Metal (ราคาขึ้น-ลง)</h3>
+                        <p class="text-xs text-slate-500">เปรียบเทียบราคาล่าสุดกับราคาก่อนหน้าของ 2S Metal และผลกระทบต่อกำไรของร้าน</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modalPriceTrends')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Summary Cards inside Modal -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-shrink-0">
+                <div class="p-3.5 rounded-xl bg-rose-50/70 border border-rose-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-rose-700 flex items-center gap-1">
+                            <span>▲ สินค้าที่ราคาขึ้น</span>
+                        </span>
+                        <span class="text-[10px] text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded font-bold">ต้นทุนเพิ่ม</span>
+                    </div>
+                    <div class="text-2xl font-bold text-rose-700 mt-1" id="modalPriceTrendsUpCount">0 รายการ</div>
+                    <div class="text-[11px] text-rose-600 font-medium" id="modalPriceTrendsUpAvg">ปรับขึ้นเฉลี่ย +฿0.00</div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-emerald-50/70 border border-emerald-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-emerald-700 flex items-center gap-1">
+                            <span>▼ สินค้าที่ราคาลง</span>
+                        </span>
+                        <span class="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded font-bold">กำไรเพิ่ม</span>
+                    </div>
+                    <div class="text-2xl font-bold text-emerald-700 mt-1" id="modalPriceTrendsDownCount">0 รายการ</div>
+                    <div class="text-[11px] text-emerald-600 font-medium" id="modalPriceTrendsDownAvg">ปรับลงเฉลี่ย -฿0.00</div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                            <span>⚖️ สินค้าราคาคงที่</span>
+                        </span>
+                        <span class="text-[10px] text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded font-bold">ไม่เปลี่ยนแปลง</span>
+                    </div>
+                    <div class="text-2xl font-bold text-slate-700 mt-1" id="modalPriceTrendsSameCount">0 รายการ</div>
+                    <div class="text-[11px] text-slate-500">ต้นทุนเท่าเดิม</div>
+                </div>
+            </div>
+
+            <!-- Filter tabs & search inside modal -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2 flex-shrink-0">
+                <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-lg w-full sm:w-auto">
+                    <button onclick="setTrendsModalTab('all_changes')" id="trendsTabBtn-all" class="px-3 py-1 text-xs font-bold rounded-md bg-white shadow-xs text-slate-900 transition">ทั้งหมดที่ปรับราคา</button>
+                    <button onclick="setTrendsModalTab('up')" id="trendsTabBtn-up" class="px-3 py-1 text-xs font-bold rounded-md text-rose-700 hover:bg-white/60 transition">▲ ราคาขึ้น</button>
+                    <button onclick="setTrendsModalTab('down')" id="trendsTabBtn-down" class="px-3 py-1 text-xs font-bold rounded-md text-emerald-700 hover:bg-white/60 transition">▼ ราคาลง</button>
+                </div>
+                <div class="relative w-full sm:w-64">
+                    <i data-lucide="search" class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-400"></i>
+                    <input type="text" id="modalTrendsSearch" oninput="filterTrendsModalList()" placeholder="ค้นหารหัส หรือชื่อเหล็ก..." 
+                           class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <!-- Scrollable Table of Changes -->
+            <div class="overflow-y-auto flex-1 border border-slate-200 rounded-xl">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead class="bg-slate-100 sticky top-0 text-slate-700 font-semibold z-10">
+                        <tr>
+                            <th class="py-2.5 px-3">สินค้าของร้าน</th>
+                            <th class="py-2.5 px-3">สินค้า 2S Metal ที่จับคู่</th>
+                            <th class="py-2.5 px-3 text-right">ต้นทุนสุทธิเดิม</th>
+                            <th class="py-2.5 px-3 text-right">ต้นทุนสุทธิใหม่</th>
+                            <th class="py-2.5 px-3 text-center">การเปลี่ยนแปลง</th>
+                            <th class="py-2.5 px-3 text-right">กำไรเดิม ➔ ใหม่</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalPriceTrendsBody" class="divide-y divide-slate-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t text-xs text-slate-500 flex-shrink-0">
+                <span id="modalPriceTrendsFooter">แสดงรายการความเคลื่อนไหวราคา 2S ล่าสุด</span>
+                <button onclick="closeModal('modalPriceTrends')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-medium transition">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal: Link / Map Product -->
     <div id="modalLink" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">

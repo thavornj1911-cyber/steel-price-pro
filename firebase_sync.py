@@ -42,10 +42,19 @@ def generate_cloud_bundle() -> Dict[str, Any]:
             "category": sp.get("category", ""),
             "unit": sp.get("unit", "เส้น"),
             "current_cost": sp.get("current_cost", 0.0),
+            "prev_cost": sp.get("prev_cost", 0.0),
             "net_cost": sp.get("net_cost", 0.0),
+            "prev_net_cost": sp.get("prev_net_cost", 0.0),
+            "diff_cost": sp.get("diff_cost", 0.0),
+            "diff_pct": sp.get("diff_pct", 0.0),
+            "price_trend": sp.get("price_trend", "same"),
             "stock_status": sp.get("stock_status", "")
         })
     
+    price_up_count = sum(1 for it in matrix_items if it.get("price_trend") == "up")
+    price_down_count = sum(1 for it in matrix_items if it.get("price_trend") == "down")
+    price_same_count = sum(1 for it in matrix_items if it.get("price_trend") == "same" and it.get("is_mapped"))
+
     now_str = datetime.now().strftime("%d/%m/%Y %H:%M น.")
     
     bundle = {
@@ -56,6 +65,9 @@ def generate_cloud_bundle() -> Dict[str, Any]:
         "total_shop_count": len(all_shop),
         "mapped_count": len(mappings),
         "supplier_count": len(cleaned_supplier),
+        "price_up_count": price_up_count,
+        "price_down_count": price_down_count,
+        "price_same_count": price_same_count,
         "last_sync_time": f"ซิงค์สดเมื่อ {now_str}",
         "updated_at": datetime.now().isoformat(),
         "read_only": True

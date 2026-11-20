@@ -92,9 +92,10 @@ def get_matrix(
     search: str = Query("", description="Search by code or name"),
     category: str = Query("", description="Filter by category"),
     mapping_filter: str = Query("all", description="all, mapped, unmapped"),
-    margin_filter: str = Query("all", description="all, loss, warning, good")
+    margin_filter: str = Query("all", description="all, loss, warning, good"),
+    price_trend_filter: str = Query("all", description="all, up, down, same")
 ):
-    items = db.get_pricing_matrix(search, category, mapping_filter, margin_filter)
+    items = db.get_pricing_matrix(search, category, mapping_filter, margin_filter, price_trend_filter)
     
     # Calculate summary stats for the current view
     total_items = len(items)
@@ -102,6 +103,9 @@ def get_matrix(
     loss_count = sum(1 for it in items if it.get("margin_status") == "loss")
     warning_count = sum(1 for it in items if it.get("margin_status") == "warning")
     good_count = sum(1 for it in items if it.get("margin_status") == "good")
+    price_up_count = sum(1 for it in items if it.get("price_trend") == "up")
+    price_down_count = sum(1 for it in items if it.get("price_trend") == "down")
+    price_same_count = sum(1 for it in items if it.get("price_trend") == "same" and it["is_mapped"])
     
     valid_margins = [it["normal_margin_pct"] for it in items if it["is_mapped"] and it["effective_cost"] > 0]
     avg_margin = sum(valid_margins) / len(valid_margins) if valid_margins else 0.0
@@ -125,6 +129,9 @@ def get_matrix(
             "loss_count": loss_count,
             "warning_count": warning_count,
             "good_count": good_count,
+            "price_up_count": price_up_count,
+            "price_down_count": price_down_count,
+            "price_same_count": price_same_count,
             "avg_margin_pct": round(avg_margin, 2)
         }
     }

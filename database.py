@@ -295,13 +295,21 @@ def get_supplier_products(search: str = "", category: str = "") -> List[Dict[str
     for r in rows:
         cur_cost = float(r.get("current_cost") or 0.0)
         prev_cost = float(r.get("prev_cost") or 0.0)
+        net_cur = round(cur_cost * cf, 2)
+        net_prev = round(prev_cost * cf, 2)
         r["raw_cost"] = round(cur_cost, 2)
-        r["net_cost"] = round(cur_cost * cf, 2)
-        r["prev_net_cost"] = round(prev_cost * cf, 2)
+        r["net_cost"] = net_cur
+        r["prev_net_cost"] = net_prev
         r["cost_factor"] = cf
         r["discount_pct"] = factors["discount_pct"]
         r["vat_pct"] = factors["vat_pct"]
         r["include_vat"] = factors["include_vat"]
+
+        diff_c = round(cur_cost - prev_cost, 2)
+        diff_p = round(((cur_cost - prev_cost) / prev_cost) * 100.0, 2) if prev_cost > 0 else 0.0
+        r["diff_cost"] = diff_c
+        r["diff_pct"] = diff_p
+        r["price_trend"] = "up" if diff_c > 0.01 else ("down" if diff_c < -0.01 else "same")
 
     return rows
 
@@ -350,7 +358,13 @@ def batch_upsert_supplier_products(products: List[Dict[str, Any]]) -> int:
         existing = c.fetchone()
 
         if existing:
-            prev_cost = existing["current_cost"]
+            old_cost = float(existing["current_cost"] or 0.0)
+            old_prev = float(existing["prev_cost"] or 0.0)
+            if cost > 0 and abs(cost - old_cost) > 0.001:
+                prev_cost = old_cost  # Cost changed! Track old cost
+            else:
+                prev_cost = old_prev if old_prev > 0 else old_cost
+
             c.execute("""
             UPDATE supplier_products SET
                 name = ?,
@@ -543,10 +557,10 @@ def import_mappings_backup(records: List[Dict[str, Any]]) -> int:
     return success_count
 
 # ----------------- Price Matrix & Calculator Core -----------------
-def get_pricing_matrix(search: str = "", category: str = "", mapping_filter: str = "all", margin_filter: str = "all") -> List[Dict[str, Any]]:
+def get_pricing_matrix(search: str = "", category: str = "", mapping_filter: str = "all", margin_filter: str = "all", price_trend_filter: str = "all") -> List[Dict[str, Any]]:
     """
     Returns full comparison sheet between shop selling price and 2S Metal supplier cost,
-    calculating normal profit, margin %, and status.
+    calculating normal profit, margin %, price movement trends (up/down/same), and status.
     """
     conn = get_connection()
     c = conn.cursor()
@@ -615,11 +629,29 @@ def get_pricing_matrix(search: str = "", category: str = "", mapping_filter: str
         raw_prev_cost = float(row.get("supplier_prev_cost") or 0.0) if is_mapped else 0.0
         prev_cost = raw_prev_cost * multiplier * cf
         price_trend = "same"
+        diff_cost = 0.0
+        diff_pct = 0.0
+        raw_diff_cost = 0.0
+        raw_diff_pct = 0.0
+
         if is_mapped and prev_cost > 0:
-            if effective_cost > prev_cost:
+            diff_cost = round(effective_cost - prev_cost, 2)
+            diff_pct = round(((effective_cost - prev_cost) / prev_cost) * 100.0, 2)
+            raw_diff_cost = round(raw_supplier_cost - raw_prev_cost, 2)
+            raw_diff_pct = round(((raw_supplier_cost - raw_prev_cost) / raw_prev_cost) * 100.0, 2) if raw_prev_cost > 0 else 0.0
+
+            if diff_cost > 0.01:
                 price_trend = "up"
-            elif effective_cost < prev_cost:
+            elif diff_cost < -0.01:
                 price_trend = "down"
+
+        # Price trend filter
+        if price_trend_filter == "up" and price_trend != "up":
+            continue
+        if price_trend_filter == "down" and price_trend != "down":
+            continue
+        if price_trend_filter == "same" and (price_trend != "same" or not is_mapped):
+            continue
 
         # Normal Profit & Margin
         if is_mapped and effective_cost > 0 and selling_price > 0:
@@ -659,8 +691,13 @@ def get_pricing_matrix(search: str = "", category: str = "", mapping_filter: str
             "is_mapped": is_mapped,
             "multiplier": multiplier,
             "raw_supplier_cost": round(raw_supplier_cost, 2),
+            "raw_prev_cost": round(raw_prev_cost, 2),
+            "raw_diff_cost": raw_diff_cost,
+            "raw_diff_pct": raw_diff_pct,
             "effective_cost": round(effective_cost, 2),
             "prev_effective_cost": round(prev_cost, 2),
+            "diff_cost": diff_cost,
+            "diff_pct": diff_pct,
             "cost_adjustment_factor": round(cf, 4),
             "vat_pct": factors["vat_pct"],
             "discount_pct": factors["discount_pct"],

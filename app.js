@@ -358,6 +358,7 @@ function filterMatrixClientSide() {
     const category = appState.selectedCategory !== undefined ? appState.selectedCategory : (document.getElementById('categoryFilter')?.value || '');
     const mapping = document.getElementById('mappingFilter')?.value || 'all';
     const margin = document.getElementById('marginFilter')?.value || 'all';
+    const priceTrend = document.getElementById('priceTrendFilter')?.value || 'all';
     const sortBy = document.getElementById('sortFilter')?.value || 'profit_desc';
 
     let items = appState.allCloudItems || [];
@@ -391,6 +392,15 @@ function filterMatrixClientSide() {
         items = items.filter(it => it.margin_status === 'good');
     }
 
+    // 2S Price trend filter (up / down / same)
+    if (priceTrend === 'up') {
+        items = items.filter(it => it.price_trend === 'up');
+    } else if (priceTrend === 'down') {
+        items = items.filter(it => it.price_trend === 'down');
+    } else if (priceTrend === 'same') {
+        items = items.filter(it => it.price_trend === 'same' && it.is_mapped);
+    }
+
     // Sort items by user selection (Default: Profit from High to Low)
     items = sortMatrixItems(items, sortBy);
 
@@ -402,6 +412,12 @@ function filterMatrixClientSide() {
     const lossCount = items.filter(it => it.margin_status === 'loss').length;
     const warningCount = items.filter(it => it.margin_status === 'warning').length;
     const goodCount = items.filter(it => it.margin_status === 'good').length;
+    
+    // Overall price trends count across all items
+    const allSource = appState.allCloudItems || [];
+    const priceUpCount = allSource.filter(it => it.price_trend === 'up').length;
+    const priceDownCount = allSource.filter(it => it.price_trend === 'down').length;
+
     const validMargins = items.filter(it => it.is_mapped && it.effective_cost > 0).map(it => it.normal_margin_pct);
     const avgMargin = validMargins.length ? (validMargins.reduce((a, b) => a + b, 0) / validMargins.length).toFixed(1) : "0.0";
 
@@ -411,6 +427,8 @@ function filterMatrixClientSide() {
         loss_count: lossCount,
         warning_count: warningCount,
         good_count: goodCount,
+        price_up_count: priceUpCount,
+        price_down_count: priceDownCount,
         avg_margin_pct: avgMargin
     };
 
@@ -442,6 +460,16 @@ function sortMatrixItems(items, sortBy = 'profit_desc') {
             if (!a.is_mapped && !b.is_mapped) return (a.shop_code || '').localeCompare(b.shop_code || '');
             if (mB !== mA) return mB - mA; // Descending: Highest margin % first
             return pB - pA;
+        } else if (sortBy === 'trend_up') {
+            const diffA = a.diff_cost || 0;
+            const diffB = b.diff_cost || 0;
+            if (diffB !== diffA) return diffB - diffA; // Highest price increase first
+            return pB - pA;
+        } else if (sortBy === 'trend_down') {
+            const diffA = a.diff_cost || 0;
+            const diffB = b.diff_cost || 0;
+            if (diffA !== diffB) return diffA - diffB; // Biggest price decrease first
+            return pB - pA;
         } else if (sortBy === 'profit_asc') {
             if (a.is_mapped && !b.is_mapped) return -1;
             if (!a.is_mapped && b.is_mapped) return 1;
@@ -461,6 +489,14 @@ function sortMatrixItems(items, sortBy = 'profit_desc') {
     });
 }
 
+function filterByPriceTrend(trend) {
+    const sel = document.getElementById('priceTrendFilter');
+    if (sel) {
+        sel.value = (sel.value === trend) ? 'all' : trend;
+        filterMatrix();
+    }
+}
+
 function toggleHeaderSort(col) {
     const sel = document.getElementById('sortFilter');
     if (!sel) return;
@@ -468,6 +504,8 @@ function toggleHeaderSort(col) {
         sel.value = (sel.value === 'profit_desc') ? 'profit_asc' : 'profit_desc';
     } else if (col === 'margin') {
         sel.value = (sel.value === 'margin_desc') ? 'profit_desc' : 'margin_desc';
+    } else if (col === 'trend') {
+        sel.value = (sel.value === 'trend_up') ? 'trend_down' : 'trend_up';
     }
     filterMatrix();
 }
@@ -546,12 +584,14 @@ async function fetchMatrix() {
     const category = appState.selectedCategory !== undefined ? appState.selectedCategory : document.getElementById('categoryFilter').value;
     const mapping = document.getElementById('mappingFilter').value;
     const margin = document.getElementById('marginFilter').value;
+    const priceTrend = document.getElementById('priceTrendFilter')?.value || 'all';
 
     const params = new URLSearchParams({
         search: search,
         category: category,
         mapping_filter: mapping,
-        margin_filter: margin
+        margin_filter: margin,
+        price_trend_filter: priceTrend
     });
 
     try {
@@ -674,12 +714,24 @@ async function fetchShopProducts() {
 // ----------------- Rendering -----------------
 function renderStats(stats) {
     if (!stats) return;
-    document.getElementById('statTotal').textContent = stats.total_items.toLocaleString();
-    document.getElementById('statMapped').textContent = `ผูกแล้ว ${stats.mapped_items.toLocaleString()} รายการ`;
-    document.getElementById('statAvgMargin').textContent = `${stats.avg_margin_pct}%`;
-    document.getElementById('statGood').textContent = `กำไรดี (>15%) : ${stats.good_count}`;
-    document.getElementById('statWarning').textContent = stats.warning_count;
-    document.getElementById('statLoss').textContent = stats.loss_count;
+    const elTotal = document.getElementById('statTotal');
+    if (elTotal) elTotal.textContent = (stats.total_items || 0).toLocaleString();
+    const elMapped = document.getElementById('statMapped');
+    if (elMapped) elMapped.textContent = `ผูกแล้ว ${(stats.mapped_items || 0).toLocaleString()} รายการ`;
+    const elAvg = document.getElementById('statAvgMargin');
+    if (elAvg) elAvg.textContent = `${stats.avg_margin_pct || '0.0'}%`;
+    const elGood = document.getElementById('statGood');
+    if (elGood) elGood.textContent = `กำไรดี (>15%) : ${stats.good_count || 0}`;
+    const elWarning = document.getElementById('statWarning');
+    if (elWarning) elWarning.textContent = stats.warning_count || 0;
+    const elLoss = document.getElementById('statLoss');
+    if (elLoss) elLoss.textContent = stats.loss_count || 0;
+
+    // 2S Price Movement stats
+    const elUp = document.getElementById('statPriceUp');
+    if (elUp) elUp.textContent = (stats.price_up_count || 0).toLocaleString();
+    const elDown = document.getElementById('statPriceDown');
+    if (elDown) elDown.textContent = (stats.price_down_count || 0).toLocaleString();
 }
 
 function renderMatrixTable(items) {
@@ -799,14 +851,25 @@ function renderMatrixTable(items) {
             <!-- 2S Cost -->
             <td class="py-3 px-3 text-right bg-slate-50/60 font-mono">
                 ${isMapped && effCost > 0 ? `
-                    <div class="font-bold text-slate-800 text-sm flex items-center justify-end space-x-1">
-                        ${trendIcon}
+                    <div class="font-bold text-slate-900 text-sm flex items-center justify-end space-x-1">
                         <span>฿${effCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
                     </div>
-                    <div class="text-[10px] text-slate-500 font-sans">
-                        ราคาตั้ง ฿${(item.raw_supplier_cost || (item.supplier_cost * (item.multiplier || 1.0))).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-                        ${item.include_vat ? `<span class="text-emerald-700 font-medium">(ลด ${item.discount_pct}%+VAT)</span>` : `<span class="text-amber-700 font-medium">(ลด ${item.discount_pct}%)</span>`}
-                    </div>
+                    ${item.price_trend === 'up' ? `
+                        <div class="mt-0.5 inline-flex items-center gap-1 text-[10px] font-bold text-rose-700 bg-rose-100 border border-rose-200 px-1.5 py-0.2 rounded" title="2S ปรับราคาขึ้น">
+                            ▲ +฿${(item.diff_cost || 0).toFixed(2)} (+${item.diff_pct || 0}%)
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-sans">เดิม ฿${(item.prev_effective_cost || 0).toFixed(2)}</div>
+                    ` : (item.price_trend === 'down' ? `
+                        <div class="mt-0.5 inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-1.5 py-0.2 rounded" title="2S ปรับราคาลง">
+                            ▼ -฿${Math.abs(item.diff_cost || 0).toFixed(2)} (${item.diff_pct || 0}%)
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-sans">เดิม ฿${(item.prev_effective_cost || 0).toFixed(2)}</div>
+                    ` : `
+                        <div class="text-[10px] text-slate-400 font-sans">
+                            ราคาตั้ง ฿${(item.raw_supplier_cost || (item.supplier_cost * (item.multiplier || 1.0))).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            ${item.include_vat ? `<span class="text-emerald-700 font-medium">(ลด ${item.discount_pct}%+VAT)</span>` : `<span class="text-amber-700 font-medium">(ลด ${item.discount_pct}%)</span>`}
+                        </div>
+                    `)}
                     ${item.multiplier !== 1 ? `<div class="text-[10px] text-slate-400 font-sans">ตัวคูณ ${item.multiplier}</div>` : ''}
                 ` : `
                     <span class="text-xs text-slate-300">-</span>
@@ -969,6 +1032,15 @@ function renderMatrixCards(items) {
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-[11px] font-mono font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">${item.shop_code}</span>
                         <span class="text-[11px] font-medium text-sky-700 bg-sky-50 border border-sky-200/60 px-2 py-0.5 rounded-md">${escapeHtml(item.shop_category || 'เหล็ก')}</span>
+                        ${item.price_trend === 'up' ? `
+                            <span class="text-[10px] font-bold text-rose-700 bg-rose-100 border border-rose-200 px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
+                                ▲ 2S ปรับขึ้น
+                            </span>
+                        ` : (item.price_trend === 'down' ? `
+                            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
+                                ▼ 2S ปรับลง
+                            </span>
+                        ` : '')}
                     </div>
                     <h4 class="text-sm font-bold text-slate-900 leading-snug line-clamp-2">${escapeHtml(item.shop_name)}</h4>
                 </div>
@@ -989,8 +1061,27 @@ function renderMatrixCards(items) {
                 <div class="text-right">
                     <span class="text-[10px] text-slate-400 font-medium block">ต้นทุนสุทธิ 2S (รวมVAT-1%)</span>
                     ${isMapped && effCost > 0 ? `
-                        <span class="text-base font-bold text-blue-700 font-mono">฿${effCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-                        <span class="text-[10px] text-slate-500 block truncate" title="${escapeHtml(item.supplier_name)}">${escapeHtml(item.supplier_name)}</span>
+                        <div class="flex items-center justify-end gap-1">
+                            <span class="text-base font-bold text-blue-700 font-mono">฿${effCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                        </div>
+                        ${item.price_trend === 'up' ? `
+                            <div class="flex items-center justify-end gap-1 flex-wrap mt-0.5">
+                                <span class="inline-flex items-center gap-0.5 text-[10px] font-bold text-rose-700 bg-rose-100 border border-rose-200 px-1.5 py-0.2 rounded-md">
+                                    ▲ ขึ้น +฿${(item.diff_cost || 0).toFixed(2)} (+${item.diff_pct || 0}%)
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-mono">เดิม ฿${(item.prev_effective_cost || 0).toFixed(2)}</span>
+                            </div>
+                        ` : (item.price_trend === 'down' ? `
+                            <div class="flex items-center justify-end gap-1 flex-wrap mt-0.5">
+                                <span class="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-1.5 py-0.2 rounded-md">
+                                    ▼ ลง -฿${Math.abs(item.diff_cost || 0).toFixed(2)} (${item.diff_pct || 0}%)
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-mono">เดิม ฿${(item.prev_effective_cost || 0).toFixed(2)}</span>
+                            </div>
+                        ` : `
+                            <div class="text-[10px] text-slate-400 mt-0.5">ราคาคงที่</div>
+                        `)}
+                        <span class="text-[10px] text-slate-500 block truncate mt-0.5" title="${escapeHtml(item.supplier_name)}">${escapeHtml(item.supplier_name)}</span>
                     ` : `
                         <span class="text-xs text-amber-600 font-medium mt-1 inline-block">ยังไม่ผูกสินค้า</span>
                     `}
@@ -2135,7 +2226,14 @@ function renderSupplierTable(items) {
             <td class="py-2.5 px-3 text-slate-600 text-xs">${it.unit}</td>
             <td class="py-2.5 px-3 text-right font-mono text-slate-600">฿${it.current_cost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td class="py-2.5 px-3 text-right font-mono font-bold text-blue-700 bg-blue-50/50">฿${(it.net_cost || (it.current_cost * 1.0593)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td class="py-2.5 px-3 text-right font-mono text-xs text-slate-400">${(it.prev_net_cost && it.prev_net_cost > 0) ? `฿${it.prev_net_cost.toLocaleString(undefined, {minimumFractionDigits: 2})}` : ((it.prev_cost && it.prev_cost > 0) ? `฿${it.prev_cost.toLocaleString()}` : '-')}</td>
+            <td class="py-2.5 px-3 text-right font-mono text-xs">
+                <div>${(it.prev_net_cost && it.prev_net_cost > 0) ? `฿${it.prev_net_cost.toLocaleString(undefined, {minimumFractionDigits: 2})}` : '-'}</div>
+                ${it.price_trend === 'up' ? `
+                    <span class="inline-flex items-center text-[10px] font-bold text-rose-700 bg-rose-100 px-1.5 py-0.2 rounded">▲ +฿${(it.diff_cost || 0).toFixed(2)}</span>
+                ` : (it.price_trend === 'down' ? `
+                    <span class="inline-flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded">▼ -฿${Math.abs(it.diff_cost || 0).toFixed(2)}</span>
+                ` : '<span class="text-[10px] text-slate-400">คงที่</span>')}
+            </td>
             <td class="py-2.5 px-3 text-center text-xs"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-medium">${it.stock_status || 'พร้อมส่ง'}</span></td>
             <td class="py-2.5 px-3 text-slate-400 text-xs font-mono">${it.updated_at || '-'}</td>
         </tr>
@@ -2567,4 +2665,128 @@ function escapeHtml(text) {
             "'": '&#039;'
         }[m];
     });
+}
+
+// ----------------- 2S Price Trends Modal -----------------
+let currentTrendsTab = 'all_changes';
+
+function openPriceTrendsModal() {
+    const modal = document.getElementById('modalPriceTrends');
+    if (!modal) return;
+
+    const items = appState.allCloudItems || appState.matrix || [];
+    const mapped = items.filter(it => it.is_mapped);
+    const upItems = mapped.filter(it => it.price_trend === 'up');
+    const downItems = mapped.filter(it => it.price_trend === 'down');
+    const sameItems = mapped.filter(it => it.price_trend === 'same');
+
+    const upCountEl = document.getElementById('modalPriceTrendsUpCount');
+    if (upCountEl) upCountEl.textContent = `${upItems.length} รายการ`;
+    const upAvgEl = document.getElementById('modalPriceTrendsUpAvg');
+    if (upAvgEl) {
+        const upSum = upItems.reduce((acc, it) => acc + (it.diff_cost || 0), 0);
+        const upAvg = upItems.length > 0 ? (upSum / upItems.length) : 0;
+        upAvgEl.textContent = `ปรับขึ้นเฉลี่ย +฿${upAvg.toFixed(2)}`;
+    }
+
+    const downCountEl = document.getElementById('modalPriceTrendsDownCount');
+    if (downCountEl) downCountEl.textContent = `${downItems.length} รายการ`;
+    const downAvgEl = document.getElementById('modalPriceTrendsDownAvg');
+    if (downAvgEl) {
+        const downSum = downItems.reduce((acc, it) => acc + Math.abs(it.diff_cost || 0), 0);
+        const downAvg = downItems.length > 0 ? (downSum / downItems.length) : 0;
+        downAvgEl.textContent = `ปรับลงเฉลี่ย -฿${downAvg.toFixed(2)}`;
+    }
+
+    const sameCountEl = document.getElementById('modalPriceTrendsSameCount');
+    if (sameCountEl) sameCountEl.textContent = `${sameItems.length} รายการ`;
+
+    const searchInput = document.getElementById('modalTrendsSearch');
+    if (searchInput) searchInput.value = '';
+
+    setTrendsModalTab('all_changes');
+    modal.classList.remove('hidden');
+    lucide.createIcons();
+}
+
+function setTrendsModalTab(tab) {
+    currentTrendsTab = tab;
+    ['all', 'up', 'down'].forEach(t => {
+        const btn = document.getElementById(`trendsTabBtn-${t}`);
+        if (!btn) return;
+        if ((tab === 'all_changes' && t === 'all') || tab === t) {
+            btn.className = 'px-3 py-1 text-xs font-bold rounded-md bg-white shadow-xs text-slate-900 transition';
+        } else {
+            btn.className = 'px-3 py-1 text-xs font-bold rounded-md text-slate-600 hover:bg-white/60 transition';
+        }
+    });
+    filterTrendsModalList();
+}
+
+function filterTrendsModalList() {
+    const q = (document.getElementById('modalTrendsSearch')?.value || '').toLowerCase().trim();
+    const items = appState.allCloudItems || appState.matrix || [];
+    let list = items.filter(it => it.is_mapped);
+
+    if (currentTrendsTab === 'up') {
+        list = list.filter(it => it.price_trend === 'up');
+    } else if (currentTrendsTab === 'down') {
+        list = list.filter(it => it.price_trend === 'down');
+    } else {
+        list = list.filter(it => it.price_trend === 'up' || it.price_trend === 'down');
+    }
+
+    if (q) {
+        list = list.filter(it => {
+            const str = `${it.shop_code} ${it.shop_name} ${it.supplier_name || ''} ${it.supplier_code || ''}`.toLowerCase();
+            return str.includes(q);
+        });
+    }
+
+    // Sort by largest absolute difference first
+    list.sort((a, b) => Math.abs(b.diff_cost || 0) - Math.abs(a.diff_cost || 0));
+
+    const tbody = document.getElementById('modalPriceTrendsBody');
+    if (!tbody) return;
+
+    if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">ไม่พบรายการความเคลื่อนไหวราคาตามที่เลือก</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = list.map(it => {
+        const isUp = it.price_trend === 'up';
+        const diffBadge = isUp 
+            ? `<span class="inline-flex items-center gap-1 font-bold text-rose-700 bg-rose-100 border border-rose-200 px-2 py-0.5 rounded-full">▲ +฿${(it.diff_cost || 0).toFixed(2)} (+${it.diff_pct || 0}%)</span>`
+            : `<span class="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-full">▼ -฿${Math.abs(it.diff_cost || 0).toFixed(2)} (${it.diff_pct || 0}%)</span>`;
+
+        const profitImpact = isUp
+            ? `<span class="text-rose-600 font-bold">กำไรลดลง -฿${(it.diff_cost || 0).toFixed(2)}</span>`
+            : `<span class="text-emerald-600 font-bold">กำไรเพิ่มขึ้น +฿${Math.abs(it.diff_cost || 0).toFixed(2)}</span>`;
+
+        return `
+            <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-3">
+                    <div class="font-bold text-slate-800">${escapeHtml(it.shop_name)}</div>
+                    <div class="text-[10px] text-slate-400 font-mono">${it.shop_code}</div>
+                </td>
+                <td class="py-2.5 px-3">
+                    <div class="text-slate-800 font-medium">${escapeHtml(it.supplier_name)}</div>
+                    <div class="text-[10px] text-slate-400">${escapeHtml(it.supplier_spec || it.supplier_code || '')}</div>
+                </td>
+                <td class="py-2.5 px-3 text-right font-mono text-slate-500">
+                    ฿${(it.prev_effective_cost || 0).toFixed(2)}
+                </td>
+                <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-900">
+                    ฿${(it.effective_cost || 0).toFixed(2)}
+                </td>
+                <td class="py-2.5 px-3 text-center">
+                    ${diffBadge}
+                </td>
+                <td class="py-2.5 px-3 text-right font-mono text-xs">
+                    ${profitImpact}
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
